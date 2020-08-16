@@ -43,7 +43,7 @@ public class Modelo {
 	 * Requerimiento de agregar dato
 	 * @param dato
 	 */
-	public void agregar(String dato)
+	public void agregar(int dato)
 	{	
 		datos.agregar(dato);
 	}
@@ -53,7 +53,7 @@ public class Modelo {
 	 * @param dato Dato a buscar
 	 * @return dato encontrado
 	 */
-	public String buscar(String dato)
+	public String buscar(int dato)
 	{
 		return datos.buscar(dato);
 	}
@@ -63,9 +63,14 @@ public class Modelo {
 	 * @param dato Dato a eliminar
 	 * @return dato eliminado
 	 */
-	public String eliminar(String dato)
+	public String eliminar(int dato)
 	{
 		return datos.eliminar(dato);
+	}
+
+	public void agregar(int dato) {
+		// TODO Auto-generated method stub
+		
 	}
 
 
