@@ -31,7 +31,7 @@ public interface TablaSimbolosOrdenada<K extends Comparable<K>,V>
     /* 
 	 * Indica si la llave key se encuentra en el árbol
 	 */
-    public boolean contains(K key);
+    public boolean contains(K key) ;
     /* 
 	 * Inserta la pareja [key, val] en el árbol. Si la llave ya existe se reemplaza
 	el valor. 
