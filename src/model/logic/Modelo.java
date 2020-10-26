@@ -65,17 +65,159 @@ public class Modelo<T> {
 			while((fila1 = reader1.readNext()) != null) 
 			{
 
-				if(! fila1[0].equals("ID"))
-				{
-					String fecha = fila1[4].substring(0, 10);
-					Date date = new SimpleDateFormat("yyyy-MM-dd").parse(fecha);
-
-					Accidente nuevo = new Accidente(date,Integer.parseInt(fila1[3]));
-
+				int k = 0; 
+				
+				String iD= fila1[k];
+				k++;
+				
+				String source = fila1[k];
+				k++;
+				
+				double TMC = Double.parseDouble(fila1[k]);
+				k++;
+				
+				double severity = Double.parseDouble(fila1[k]);
+				k++;
+				
+				Date start_Time = fila1[k]; // 
+				k++;
+				
+				Date end_Time = fila1[k]; // 
+				k++;
+				
+				double start_Lat = Double.parseDouble(fila1[k]);
+				k++;
+				
+				double start_Lng = Double.parseDouble(fila1[k]);
+				k++;
+				double end_Lat = Double.parseDouble(fila1[k]);
+				k++;
+				
+				double end_Lng = Double.parseDouble(fila1[k]);
+				k++;
+				double distance_mi = Double.parseDouble(fila1[k]);
+				k++;
+				
+				String description = fila1[k];
+				k++;
+				
+				double number = Double.parseDouble(fila1[k]);
+				k++;
+				
+				String street = fila1[k];
+				k++;
+				
+				String side =fila1[k];
+				k++;
+				
+				String city = fila1[k];
+				k++;
+				
+				String county = fila1[k];
+				k++;
+				
+				String state =fila1[k];
+				k++;
+				
+				String zipcode = fila1[k];
+				k++;
+				
+				String country =fila1[k];
+				k++;
+				
+				String timezone =fila1[k];
+				k++;
+				
+				String airportCode =fila1[k];
+				k++;
+				
+				Date weather_Timestamp = fila1[k]; //Carlos
+				k++;
+				
+				double temperaturaF = Double.parseDouble(fila1[k]);
+				k++;
+				
+				double windChillF =Double.parseDouble(fila1[k]);
+				k++;
+				
+				double humidity = Double.parseDouble(fila1[k]);
+				k++;
+				
+				double pressure =Double.parseDouble(fila1[k]);
+				k++;
+				
+				double visibility =Double.parseDouble(fila1[k]);
+				k++;
+				
+				String wind_Direction =fila1[k];
+				k++;
+				
+				double windSpeed =Double.parseDouble(fila1[k]);
+				k++;
+				
+				double precipitation =Double.parseDouble(fila1[k]);
+				k++;
+				
+				String weatherCondition =fila1[k];
+				k++;
+				
+				boolean amenity = Boolean.parseBoolean(fila1[k]);
+				k++;
+				
+				boolean bump = Boolean.parseBoolean(fila1[k]);
+				k++;
+				boolean crossing = Boolean.parseBoolean(fila1[k]);
+				k++;
+				boolean giveWay = Boolean.parseBoolean(fila1[k]);
+				k++;
+				boolean junction = Boolean.parseBoolean(fila1[k]);
+				k++;
+				boolean noExit = Boolean.parseBoolean(fila1[k]);
+				k++;
+				boolean railway = Boolean.parseBoolean(fila1[k]);
+				k++;
+				boolean roundAbout = Boolean.parseBoolean(fila1[k]);
+				k++;
+				boolean station = Boolean.parseBoolean(fila1[k]);
+				k++;
+				boolean stop = Boolean.parseBoolean(fila1[k]);
+				k++;
+				boolean trafficCalming = Boolean.parseBoolean(fila1[k]);
+				k++;
+				boolean trafficSignal = Boolean.parseBoolean(fila1[k]);
+				k++;
+				boolean turningLoop = Boolean.parseBoolean(fila1[k]);
+				k++;
+				String sunriseSunset =fila1[k];
+				k++;
+				String civilTwilight =fila1[k];
+				k++;
+				String nauticalTwilight =fila1[k];
+				k++;
+				String astronomicalTwilight =fila1[k];
+				k++;
+				
+				
+				Accidente Accidente = new Accidente(iD, source, TMC, severity, start_Time, 
+						end_Time, start_Lat, start_Lng, end_Lat, end_Lng, distance_mi,
+						description, number, street, side, city, county,
+						state , zipcode, country, timezone, airportCode, weather_Timestamp, temperaturaF,windChillF,
+						humidity, pressure, visibility, wind_Direction, windSpeed, precipitation, weatherCondition,
+						amenity, bump, crossing, giveWay, junction, noExit, railway, roundAbout,station,stop,
+						trafficCalming,trafficSignal,turningLoop,sunriseSunset,civilTwilight,nauticalTwilight,astronomicalTwilight);
+				
 					arbol.put(date.toString(), nuevo);
-					t++;
-
-				}
+//				if(! fila1[0].equals("ID"))
+//				{
+//					String fecha = fila1[4].substring(0, 10);
+//					Date date = new SimpleDateFormat("yyyy-MM-dd").parse(fecha);
+//
+//					Accidente nuevo = new Accidente(date,Integer.parseInt(fila1[3]));
+//
+//					arbol.put(date.toString(), nuevo);
+//					t++;
+//
+//				}
 			}
 
 			reader1.close();
