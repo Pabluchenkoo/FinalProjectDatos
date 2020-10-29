@@ -53,19 +53,25 @@ public class Modelo<T> {
 	int t = 0;
 	public void cargarBST() throws Exception
 	{
+		
 		try {
-
+			
 			CSVParser parser1 = new CSVParserBuilder().withSeparator(',').build();
 
 			FileReader fr1 = new FileReader(ACCIDENTES_2019);
 
 			CSVReader reader1 = new CSVReaderBuilder(fr1).withCSVParser(parser1).build();
+			
+			reader1.readNext();
 
 			String[] data = null;
-
-			while((data = reader1.readNext()) != null) 
+			
+			int numeroAccidentes=0;
+			
+			while(numeroAccidentes<=100 && (data = reader1.readNext()) != null) 
 			{
-
+				numeroAccidentes ++;
+				
 				int k = 0; 
 				
 				String iD= data[k];
@@ -212,21 +218,9 @@ public class Modelo<T> {
 					arbol.put(start_Time.toString(), nuevo);
 					arbolRB.put(start_Time.toString(), nuevo);
 				}
-				System.out.println("datos:"+ arbol.height());
-//				if(! fila1[0].equals("ID"))
-//				{
-//					String fecha = fila1[4].substring(0, 10);
-//					Date date = new SimpleDateFormat("yyyy-MM-dd").parse(fecha);
-//
-//					Accidente nuevo = new Accidente(date,Integer.parseInt(fila1[3]));
-//
-//					arbol.put(date.toString(), nuevo);
-//					t++;
-//
-//				}
+				System.out.println("datos:"+ numeroAccidentes);
 			}
 
-			reader1.close();
 
 		} 
 		catch (Exception e) {
@@ -300,6 +294,19 @@ public class Modelo<T> {
 			vista.printMessage("Fecha: " + lista.get(i).getStart_Time().toString() + " Severidad: "+ lista.get(i).getSeverity());
 		}
 	}
-
+	
+	public int buscarAccidentesFecha(Date pFecha)
+	{
+		ArrayList<Accidente> lista;
+		int contador = 0;
+		
+		for (int i = 0; i < arbol.size() ; i++)
+		{
+			Date actual = arbol.get(pFecha);
+			if ()
+		}
+		
+		return contador;
+	}
 
 }

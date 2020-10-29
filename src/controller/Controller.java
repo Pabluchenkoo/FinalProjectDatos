@@ -37,7 +37,6 @@ public class Controller {
 			switch(option){
 				case 1:
 					view.printMessage("Cargar datos: ");
-				    int capacidad = lector.nextInt();
 				    modelo.cargarBST(); 
 				    view.printMessage("Datos cargados");						
 					break;
