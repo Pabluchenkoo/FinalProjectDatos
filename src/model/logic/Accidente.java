@@ -9,7 +9,7 @@ public class Accidente
 	
 	String Source;
 	
-	double TMC;
+	String TMC;
 	
 	double Severity;
 	
@@ -21,15 +21,15 @@ public class Accidente
 	
 	double Start_Lng;
 	
-	double End_Lat;
+	String End_Lat;
 	
-	double End_Lng;
+	String End_Lng;
 	
-	double Distance_mi;
+	String Distance_mi;
 	
 	String Description;
 	
-	double number;
+	String number;
 	
 	String street;
 	
@@ -51,23 +51,23 @@ public class Accidente
 	
 	String airportCode;
 	
-	Date weather_Timestamp;
+	String weather_Timestamp;
 	
-	double temperaturaF;
+	String temperaturaF;
 	
-	double windChillF;
+	String windChillF;
 	
-	double Humidity;
+	String Humidity;
 	
-	double pressure;
+	String pressure;
 	
-	double visibility;
+	String visibility;
 	
 	String windDirection;
 	
-	double windSpeedmph;
+	String windSpeedmph;
 	
-	double precipitation;
+	String precipitation;
 	
 	String weatherCondition;
 	
@@ -107,12 +107,12 @@ public class Accidente
 	String astronomicalTwilight;
 	
 	
-	public Accidente(String iD, String source, double tMC, double severity, Date start_Time, Date end_Time,
-			double start_Lat, double start_Lng, double end_Lat, double end_Lng, double distance_mi, String description,
-			double number, String street, String side, String city, String county, String state, String zipcode,
-			String country, String timeZone, String airportCode, Date weather_Timestamp, double temperaturaF,
-			double windChillF, double humidity, double pressure, double visibility, String windDirection,
-			double windSpeedmph, double precipitation, String weatherCondition, boolean amenity, boolean bump,
+	public Accidente(String iD, String source, String tMC, double severity, Date start_Time, Date end_Time,
+			double start_Lat, double start_Lng, String end_Lat, String end_Lng, String distance_mi, String description,
+			String number, String street, String side, String city, String county, String state, String zipcode,
+			String country, String timeZone, String airportCode, String weather_Timestamp, String temperaturaF,
+			String windChillF, String humidity, String pressure, String visibility, String windDirection,
+			String windSpeedmph, String precipitation, String weatherCondition, boolean amenity, boolean bump,
 			boolean crossing, boolean give_way, boolean junction, boolean noExit, boolean railway, boolean roundAbout,
 			boolean station, boolean stop, boolean trafficCalming, boolean trafficSignal, boolean turningLoop,
 			String sunriseSunset, String civilTwilight, String nauticalTwilight, String astronomicalTwilight ) {
@@ -191,12 +191,12 @@ public class Accidente
 	}
 
 
-	public double getTMC() {
+	public String getTMC() {
 		return TMC;
 	}
 
 
-	public void setTMC(double tMC) {
+	public void setTMC(String tMC) {
 		TMC = tMC;
 	}
 
@@ -251,32 +251,32 @@ public class Accidente
 	}
 
 
-	public double getEnd_Lat() {
+	public String getEnd_Lat() {
 		return End_Lat;
 	}
 
 
-	public void setEnd_Lat(double end_Lat) {
+	public void setEnd_Lat(String end_Lat) {
 		End_Lat = end_Lat;
 	}
 
 
-	public double getEnd_Lng() {
+	public String getEnd_Lng() {
 		return End_Lng;
 	}
 
 
-	public void setEnd_Lng(double end_Lng) {
+	public void setEnd_Lng(String end_Lng) {
 		End_Lng = end_Lng;
 	}
 
 
-	public double getDistance_mi() {
+	public String getDistance_mi() {
 		return Distance_mi;
 	}
 
 
-	public void setDistance_mi(double distance_mi) {
+	public void setDistance_mi(String distance_mi) {
 		Distance_mi = distance_mi;
 	}
 
@@ -291,12 +291,12 @@ public class Accidente
 	}
 
 
-	public double getNumber() {
+	public String getNumber() {
 		return number;
 	}
 
 
-	public void setNumber(double number) {
+	public void setNumber(String number) {
 		this.number = number;
 	}
 
@@ -391,62 +391,62 @@ public class Accidente
 	}
 
 
-	public Date getWeather_Timestamp() {
+	public String getWeather_Timestamp() {
 		return weather_Timestamp;
 	}
 
 
-	public void setWeather_Timestamp(Date weather_Timestamp) {
+	public void setWeather_Timestamp(String weather_Timestamp) {
 		this.weather_Timestamp = weather_Timestamp;
 	}
 
 
-	public double getTemperaturaF() {
+	public String getTemperaturaF() {
 		return temperaturaF;
 	}
 
 
-	public void setTemperaturaF(double temperaturaF) {
+	public void setTemperaturaF(String temperaturaF) {
 		this.temperaturaF = temperaturaF;
 	}
 
 
-	public double getWindChillF() {
+	public String getWindChillF() {
 		return windChillF;
 	}
 
 
-	public void setWindChillF(double windChillF) {
+	public void setWindChillF(String windChillF) {
 		this.windChillF = windChillF;
 	}
 
 
-	public double getHumidity() {
+	public String getHumidity() {
 		return Humidity;
 	}
 
 
-	public void setHumidity(double humidity) {
+	public void setHumidity(String humidity) {
 		Humidity = humidity;
 	}
 
 
-	public double getPressure() {
+	public String getPressure() {
 		return pressure;
 	}
 
 
-	public void setPressure(double pressure) {
+	public void setPressure(String pressure) {
 		this.pressure = pressure;
 	}
 
 
-	public double getVisibility() {
+	public String getVisibility() {
 		return visibility;
 	}
 
 
-	public void setVisibility(double visibility) {
+	public void setVisibility(String visibility) {
 		this.visibility = visibility;
 	}
 
@@ -461,22 +461,22 @@ public class Accidente
 	}
 
 
-	public double getWindSpeedmph() {
+	public String getWindSpeedmph() {
 		return windSpeedmph;
 	}
 
 
-	public void setWindSpeedmph(double windSpeedmph) {
+	public void setWindSpeedmph(String windSpeedmph) {
 		this.windSpeedmph = windSpeedmph;
 	}
 
 
-	public double getPrecipitation() {
+	public String getPrecipitation() {
 		return precipitation;
 	}
 
 
-	public void setPrecipitation(double precipitation) {
+	public void setPrecipitation(String precipitation) {
 		this.precipitation = precipitation;
 	}
 

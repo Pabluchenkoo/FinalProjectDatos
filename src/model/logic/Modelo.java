@@ -37,7 +37,7 @@ public class Modelo<T> {
 
 	final static String ACCIDENTES_2019 = "data/us_accidents_dis_2019.csv";
 
-	private BinarySearchTree arbol;
+	private BinarySearchTree<String,Accidente> arbol;
 	
 	private RedBlackBST arbolRB;
 
@@ -51,7 +51,7 @@ public class Modelo<T> {
 	}
 
 	int t = 0;
-	public void cargarBST() throws Exception
+	public void cargarBST()
 	{
 		
 		try {
@@ -68,7 +68,7 @@ public class Modelo<T> {
 			
 			int numeroAccidentes=0;
 			
-			while(numeroAccidentes<=100 && (data = reader1.readNext()) != null) 
+			while((data = reader1.readNext()) != null) 
 			{
 				numeroAccidentes ++;
 				
@@ -80,7 +80,7 @@ public class Modelo<T> {
 				String source = data[k];
 				k++;
 				
-				double TMC = Double.parseDouble(data[k]);
+				String TMC =data[k];
 				k++;
 				
 				double severity = Double.parseDouble(data[k]);
@@ -92,23 +92,24 @@ public class Modelo<T> {
 				Date end_Time = new SimpleDateFormat("yyyy-MM-dd").parse(data[k].substring(0, 10)); // 
 				k++;
 				
+				
 				double start_Lat = Double.parseDouble(data[k]);
 				k++;
 				
 				double start_Lng = Double.parseDouble(data[k]);
 				k++;
-				double end_Lat = Double.parseDouble(data[k]);
+				String end_Lat = data[k];
 				k++;
 				
-				double end_Lng = Double.parseDouble(data[k]);
+				String end_Lng = data[k];
 				k++;
-				double distance_mi = Double.parseDouble(data[k]);
+				String distance_mi = data[k];
 				k++;
 				
 				String description = data[k];
 				k++;
 				
-				double number = Double.parseDouble(data[k]);
+				String number = data[k];
 				k++;
 				
 				String street = data[k];
@@ -138,31 +139,31 @@ public class Modelo<T> {
 				String airportCode =data[k];
 				k++;
 				
-				Date weather_Timestamp = new SimpleDateFormat("yyyy-MM-dd").parse(data[k].substring(0, 10)); //Carlos
+				String weather_Timestamp = data[k]; //Carlos
 				k++;
 				
-				double temperaturaF = Double.parseDouble(data[k]);
+				String temperaturaF = data[k];
 				k++;
 				
-				double windChillF =Double.parseDouble(data[k]);
+				String windChillF =data[k];
 				k++;
 				
-				double humidity = Double.parseDouble(data[k]);
+				String humidity = data[k];
 				k++;
 				
-				double pressure =Double.parseDouble(data[k]);
+				String pressure =data[k];
 				k++;
 				
-				double visibility =Double.parseDouble(data[k]);
+				String visibility =data[k];
 				k++;
 				
 				String wind_Direction =data[k];
 				k++;
 				
-				double windSpeed =Double.parseDouble(data[k]);
+				String windSpeed =data[k];
 				k++;
 				
-				double precipitation =Double.parseDouble(data[k]);
+				String precipitation =data[k];
 				k++;
 				
 				String weatherCondition =data[k];
@@ -215,20 +216,20 @@ public class Modelo<T> {
 						amenity, bump, crossing, giveWay, junction, noExit, railway, roundAbout,station,stop,
 						trafficCalming,trafficSignal,turningLoop,sunriseSunset,civilTwilight,nauticalTwilight,astronomicalTwilight);
 				
-					arbol.put(start_Time.toString(), nuevo);
+//					arbol.put(start_Time.toString(), nuevo);
 					arbolRB.put(start_Time.toString(), nuevo);
 				}
-				System.out.println("datos:"+ numeroAccidentes);
+				System.out.println("datos:" + numeroAccidentes  );
 			}
 
 
 		} 
 		catch (Exception e) {
-<<<<<<< HEAD
-			throw new Exception(e.getMessage() +"dssssss	");
-=======
+
+//			throw new Exception(e.getMessage() +"dssssss");
+
 			e.printStackTrace();
->>>>>>> acb81fdce88453288a633e7752d511abe8b21045
+
 		}
 
 	}
@@ -244,7 +245,7 @@ public class Modelo<T> {
 	}
 	
 	public String darMin() {
-		return (String)arbol.min();
+		return arbol.min();
 	}
 	
 	public String darMax() {
@@ -299,18 +300,18 @@ public class Modelo<T> {
 		}
 	}
 	
-	public int buscarAccidentesFecha(Date pFecha)
-	{
-		ArrayList<Accidente> lista;
-		int contador = 0;
-		
-		for (int i = 0; i < arbol.size() ; i++)
-		{
-			Date actual = arbol.get(pFecha);
-			if ()
-		}
-		
-		return contador;
-	}
+//	public int buscarAccidentesFecha(Date pFecha)
+//	{
+//		ArrayList<Accidente> lista;
+//		int contador = 0;
+//		
+//		for (int i = 0; i < arbol.size() ; i++)
+//		{
+//			Date actual = arbol.get(pFecha);
+//			if ()
+//		}
+//		
+//		return contador;
+//	}
 
 }

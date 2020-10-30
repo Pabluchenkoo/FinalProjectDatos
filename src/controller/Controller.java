@@ -23,7 +23,7 @@ public class Controller {
 		modelo = new Modelo(1000000);
 	}
 		
-	public void run() throws Exception 
+	public void run()
 	{
 		Scanner lector = new Scanner(System.in);
 		boolean fin = false;
