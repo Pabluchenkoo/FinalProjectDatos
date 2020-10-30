@@ -224,7 +224,7 @@ public class Modelo<T> {
 
 		} 
 		catch (Exception e) {
-			throw new Exception(e.getMessage() +"pifeo");
+			throw new Exception(e.getMessage() +"dssssss	");
 		}
 
 	}
