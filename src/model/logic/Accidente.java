@@ -2,7 +2,7 @@ package model.logic;
 
 import java.util.Date;
 
-public class Accidente 
+public class Accidente implements Comparable <Accidente>
 {
 	
 	String ID;
@@ -658,6 +658,22 @@ public class Accidente
 
 	public void setAstronomicalTwilight(String astronomicalTwilight) {
 		this.astronomicalTwilight = astronomicalTwilight;
+	}
+
+
+	@Override
+	public int compareTo(Accidente o) 
+	{
+		int comparador = 1;
+        if(Severity==o.getSeverity()) 
+        {
+            comparador = 0;
+        }else if(Severity<o.getSeverity()) 
+        {
+            comparador = -1;
+        }
+        return comparador;
+
 	}
 	
     

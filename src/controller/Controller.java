@@ -1,5 +1,9 @@
 package controller;
 
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 
 import model.logic.Modelo;
@@ -29,7 +33,8 @@ public class Controller {
 		boolean fin = false;
 		String dato = "";
 		String respuesta = "";
-
+		
+		
 		while( !fin ){
 			view.printMenu();
 
@@ -41,54 +46,78 @@ public class Controller {
 				    view.printMessage("Datos cargados");						
 					break;
 
-//				case 2:
-//					view.printMessage("--------- \nDar cadena (simple) a ingresar: ");
-//					dato = lector.next();
-//					view.printMessage("Dato agregado");
-//					view.printMessage("Numero actual de elementos " + modelo.darTamano() + "\n---------");						
-//					break;
+				
+				case 2:
+					try 
+					{
+					view.printMessage("Ingresar fecha en el formato yyyy-MM-dd:");
+					dato = lector.next();
+                    Date fecha = new SimpleDateFormat("yyyy-MM-dd").parse(dato);
+					modelo.REQ1(fecha);
+					} 
+					catch (Exception e) 
+					{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					}
+								
+					break;
 
-//				case 3:
-//					view.printMessage("--------- \nDar cadena (simple) a buscar: ");
-//					dato = lector.next();
-//					respuesta = modelo.buscar(dato);
-//					if ( respuesta != null)
-//					{
-//						view.printMessage("Dato encontrado: "+ respuesta);
-//					}
-//					else
-//					{
-//						view.printMessage("Dato NO encontrado");
-//					}
-//					view.printMessage("Numero actual de elementos " + modelo.darTamano() + "\n---------");						
-//					break;
-//
-//				case 4:
-//					view.printMessage("--------- \nDar cadena (simple) a eliminar: ");
-//					dato = lector.next();
-//					respuesta = modelo.eliminar(dato);
-//					if ( respuesta != null)
-//					{
-//						view.printMessage("Dato eliminado "+ respuesta);
-//					}
-//					else
-//					{
-//						view.printMessage("Dato NO eliminado");							
-//					}
-//					view.printMessage("Numero actual de elementos " + modelo.darTamano() + "\n---------");						
-//					break;
-//
-//				case 5: 
-//					view.printMessage("--------- \nContenido del Arreglo: ");
-//					view.printModelo(modelo);
-//					view.printMessage("Numero actual de elementos " + modelo.darTamano() + "\n---------");						
-//					break;	
-//					
-//				case 6: 
-//					view.printMessage("--------- \n Hasta pronto !! \n---------"); 
-//					lector.close();
-//					fin = true;
-//					break;	
+				case 3:
+					try 
+					{
+					view.printMessage("Ingresar fecha en el formato yyyy-MM-dd:");
+					dato = lector.next();
+                    Date fecha = new SimpleDateFormat("yyyy-MM-dd").parse(dato);
+					modelo.REQ2(fecha);
+					} 
+					catch (Exception e) 
+					{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					}
+								
+					break;					
+					
+
+				case 4:
+					try 
+					{
+					view.printMessage("Ingresar fecha1 en el formato yyyy-MM-dd:");
+					dato = lector.next();
+                    Date fecha1 = new SimpleDateFormat("yyyy-MM-dd").parse(dato);
+                    view.printMessage("Ingresar fecha2 en el formato yyyy-MM-dd:");
+					dato = lector.next();
+                    Date fecha2 = new SimpleDateFormat("yyyy-MM-dd").parse(dato);
+					modelo.REQ3(fecha1,fecha2);
+					} 
+					catch (Exception e) 
+					{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					}
+								
+					break;
+
+				case 5: 
+					try 
+					{
+					view.printMessage("Ingresar hora:");
+					dato = lector.next();	
+				
+					modelo.REQ5(dato);
+					} 
+					catch (Exception e) 
+					{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					}
+					break;
+				case 6: 
+					view.printMessage("--------- \n Hasta pronto !! \n---------"); 
+					lector.close();
+					fin = true;
+					break;	
 
 				default: 
 					view.printMessage("--------- \n Opcion Invalida !! \n---------");

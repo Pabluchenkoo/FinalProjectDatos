@@ -1,8 +1,8 @@
 package model.logic;
 
 import java.io.FileReader;
-
-
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -15,7 +15,7 @@ import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReaderBuilder;
 
-
+import model.data_structures.ArregloDinamico;
 import model.data_structures.BinarySearchTree;
 import model.data_structures.Lista;
 import model.data_structures.RedBlackBST;
@@ -40,6 +40,8 @@ public class Modelo<T> {
 	private BinarySearchTree<String,Accidente> arbol;
 	
 	private RedBlackBST arbolRB;
+	
+	private RedBlackBST hora;
 
 	/**
 	 * Constructor del modelo del mundo con capacidad predefinida
@@ -218,13 +220,17 @@ public class Modelo<T> {
 				
 //					arbol.put(start_Time.toString(), nuevo);
 					arbolRB.put(start_Time.toString(), nuevo);
+					String horaInicio = start_Time.toString().split(" ")[1];
+					
+					hora.put(horaInicio, nuevo);
 				}
-				System.out.println("datos:" + numeroAccidentes  );
+				System.out.println("datos:" + numeroAccidentes );
 			}
 
 
 		} 
-		catch (Exception e) {
+		catch (Exception e) 
+		{
 
 //			throw new Exception(e.getMessage() +"dssssss");
 
@@ -300,18 +306,282 @@ public class Modelo<T> {
 		}
 	}
 	
-//	public int buscarAccidentesFecha(Date pFecha)
-//	{
-//		ArrayList<Accidente> lista;
-//		int contador = 0;
-//		
-//		for (int i = 0; i < arbol.size() ; i++)
-//		{
-//			Date actual = arbol.get(pFecha);
-//			if ()
-//		}
-//		
-//		return contador;
-//	}
+	public String REQ1(Date fecha)throws Exception
+	{
+		
+		int total = 0;
+		if(arbolRB ==null) 
+		{
+			total = 0;
+			throw new Exception("marica no metio los datos, perdon carlos"); 
+		}
+			
+		DateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+		
+		String fInicial = fecha + " 00:00:00";
+		
+		String fFinal = fecha + " 23:59:59";
+		
+		Date fechaInicial = null;
+		
+		Date fechaFinal = null;
+		
+		fechaInicial = formato.parse(fInicial);
+		
+		fechaFinal = formato.parse(fFinal);
+		
+		ArrayList accidentes = (ArrayList) arbolRB.valuesInRange(fechaInicial, fechaFinal);
+		
+		if(accidentes == null)
+		{
+			throw new Exception( "No existen accidentes en esta fecha");
+		}
+		
+		int s1 =0;
+		
+		int s2 =0;
+		
+		int s3 =0;
+		
+		int s4 =0;
+		
+		for(int i =0; i < accidentes.size(); i++)
+		{
+			Accidente accidente = (Accidente)accidentes.get(i);
+			
+			if(accidente.getSeverity()==1)
+			{
+				s1++;
+				total++;
+			}
+			
+			else if(accidente.getSeverity()==2)
+			{
+				s2++;
+				total++;
+			}
+			
+			else if(accidente.getSeverity()==3)
+			{
+				s3++;
+				total++;
+			}
+			
+			else
+			{
+				s4++;
+				total++;
+			}
+		}
+		
+		String r ="total de accidentes: " + total + "\n De severidad 1 " + s1 + 
+		"\n De severidad 2: " + s2 + "\n De severidad 3:" + s3 + "\n De severidad 4"
+		+ s4;
+		
+		return r;
+	}
+	public String REQ2(Date pFecha) throws Exception
+	{
+		String respuesta = "";
+		{
+	        String fecha = "2019-12-05";
+	        
+	        Date inicial = new SimpleDateFormat("yyyy-MM-dd").parse(fecha);
+	        
+	        ArregloDinamico<Date> accidentesFecha = (ArregloDinamico<Date>) arbolRB.keysInRange(inicial, pFecha);
+	        
+	        ArregloDinamico<Accidente> valoresFecha = (ArregloDinamico<Accidente>) arbolRB.valuesInRange(inicial, pFecha);
+	        
+	        int total = valoresFecha.size();
+	        
+	        Date masAccidentes = null;
+	        
+	        if(total == 0) 
+	        {
+	            throw new Exception("No hay fechas");
+	        }
 
-}
+	        int contador = 0;
+	        
+	        for (int i = 0; i < accidentesFecha.size(); i++)
+	        {
+	            Date fechaAccidentes = accidentesFecha.darElemento(i);
+	            for (int j = 0; j < valoresFecha.size(); j++)
+	            {
+	                Date fechaComparacion = valoresFecha.darElemento(j).getStart_Time();
+	                
+	                int comparacion = 0;
+	                
+	                if (fechaAccidentes.compareTo(fechaComparacion) == 0)
+	                {
+	                    comparacion++;
+	                }
+	                
+	                if (comparacion > contador)
+	                {
+	                    contador = comparacion;
+	                    masAccidentes = fechaAccidentes;
+	                }
+	            }
+	        }
+	        respuesta = "accidentes antes de la fecha:" + total + 
+	        		"\n fecha con mas accidentes: " + masAccidentes ;
+	        
+	        return respuesta;
+	    }
+	}
+	
+	public String REQ3(Date fecha1, Date fecha2) throws Exception
+	{
+		ArregloDinamico<Accidente> accidentes = (ArregloDinamico<Accidente>) arbolRB.valuesInRange(fecha1, fecha2);
+
+
+
+        int total = 0;
+		if(accidentes == null)
+		{
+			throw new Exception( "No existen accidentes en esta fecha");
+		}
+		
+		int s1 =0;
+		
+		int s2 =0;
+		
+		int s3 =0;
+		
+		int s4 =0;
+		
+		for(int i =0; i < accidentes.size(); i++)
+		{
+			Accidente accidente = (Accidente)accidentes.darElemento(i);
+			
+			if(accidente.getSeverity()==1)
+			{
+				s1++;
+				total++;
+			}
+			
+			else if(accidente.getSeverity()==2)
+			{
+				s2++;
+				total++;
+			}
+			
+			else if(accidente.getSeverity()==3)
+			{
+				s3++;
+				total++;
+			}
+			
+			else
+			{
+				s4++;
+				total++;
+			}
+		}
+		
+		if(s1>s2 && s1>s3 && s1 >s4)
+		{
+			return "total de accidentes: " + total + "la severidad con mayor numero de accidentes es la severidad 1:" + s1   ;
+		}
+		else if(s2>s1 && s2>s3 && s2 >s4)
+		{
+			return "total de accidentes: " + total + "la severidad con mayor numero de accidentes es la severidad 2:" + s2   ;
+		}
+		else if(s3>s1 && s3>s2 && s3 >s4)
+		{
+			return "total de accidentes: " + total + "la severidad con mayor numero de accidentes es la severidad 3:" + s3   ;
+		}
+		else if(s4>s1 && s4>s2 && s4 >s3)
+		{
+			return "total de accidentes: " + total + "la severidad con mayor numero de accidentes es la severidad 4:" + s4   ;
+		}
+		return "total de accidentes: " + total;
+		
+		
+	}
+
+	
+	public String REQ5(String pHora) throws Exception
+	{
+		DateFormat formato = new SimpleDateFormat("hh:mm:ss");
+		Date calendario = (Date)formato.parse(pHora);
+		if (calendario.getMinutes() >= 0 && calendario.getMinutes() <= 29)
+		{
+			calendario.setMinutes(00);
+		}
+		else 
+		{
+			calendario.setMinutes(30);;
+		}
+		
+		if (calendario.getSeconds() >= 0 && calendario.getSeconds() <=29)
+		{
+			calendario.setSeconds(0);
+		}
+		else 
+		{
+			calendario.setSeconds(30);
+		}
+		
+		String fecha = "00:00:00";
+		
+		String fecha2 = "23:59:59";
+		
+		Date horaFinal = new SimpleDateFormat("hh:mm:ss").parse(fecha2);
+		
+		Date incial = new SimpleDateFormat("hh:mm:ss").parse(fecha);
+		
+		ArregloDinamico<Accidente> todosLosAccidentes = (ArregloDinamico<Accidente>) hora.valuesInRange(incial, horaFinal);
+		
+		ArregloDinamico<Accidente> valuesHora = (ArregloDinamico<Accidente>) hora.valuesInRange(incial, calendario);
+		
+		ArregloDinamico<Accidente> s0 = new ArregloDinamico<Accidente>(800000);
+		
+		ArregloDinamico<Accidente> s1 = new ArregloDinamico<Accidente>(800000);
+		
+		ArregloDinamico<Accidente> s2 = new ArregloDinamico<Accidente>(800000);
+		
+		
+		ArregloDinamico<Accidente> s3 = new ArregloDinamico<Accidente>(800000);
+		
+		int total = valuesHora.size();
+		
+		int cantidadAccidentesComparacion = todosLosAccidentes.size();
+		
+		int porcentaje = (total * 100) / cantidadAccidentesComparacion;
+		
+		for (int i = 0; i < valuesHora.size(); i++)
+		{
+			Accidente valor = valuesHora.darElemento(i);
+			if (valor.getSeverity() == 0)
+			{
+				s0.agregarAlFinal(valor);
+			}
+			else if (valor.getSeverity() == 1)
+			{
+				s1.agregarAlFinal(valor);
+			}
+			else if (valor.getSeverity() == 2)
+			{
+				s2.agregarAlFinal(valor);
+			}
+			else
+			{
+				s3.agregarAlFinal(valor);
+			}
+		}
+		String respuesta = "cantidad de accidentes en el rango: " 
+		+ total + " \n El porcentaje de accidentes entre ese rango: " + porcentaje 
+		+ "%" + " \n Accidentes con gravedad 0 fueron: " + s0.size() 
+		+ " \n Accidentes con gravedad 1 fueron: " + s1.size() + 
+		" \n Accidentes con gravedad 2 fueron: " + s2.size() + "\n" 
+		+ "\n Accidentes con gravedad 3 fueron: " + s3.size();
+		return respuesta;
+	}
+
+	}
+	
+	
+
+
