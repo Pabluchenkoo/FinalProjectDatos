@@ -18,7 +18,7 @@ import com.opencsv.CSVReaderBuilder;
 
 import model.data_structures.BinarySearchTree;
 import model.data_structures.Lista;
-
+import model.data_structures.RedBlackBST;
 import view.View;
 
 
@@ -38,167 +38,176 @@ public class Modelo<T> {
 	final static String ACCIDENTES_2019 = "data/us_accidents_dis_2019.csv";
 
 	private BinarySearchTree arbol;
+	
+	private RedBlackBST arbolRB;
 
 	/**
 	 * Constructor del modelo del mundo con capacidad predefinida
 	 */
-	public Modelo()
+	public Modelo(int capacidad)
 	{
 		arbol = new BinarySearchTree();
+		arbolRB = new RedBlackBST();
 	}
 
 	int t = 0;
 	public void cargarBST() throws Exception
 	{
+		
 		try {
 			
-			String casting = ACCIDENTES_2019;
-
 			CSVParser parser1 = new CSVParserBuilder().withSeparator(',').build();
 
-			FileReader fr1 = new FileReader(casting);
+			FileReader fr1 = new FileReader(ACCIDENTES_2019);
 
 			CSVReader reader1 = new CSVReaderBuilder(fr1).withCSVParser(parser1).build();
+			
+			reader1.readNext();
 
-			String[] fila1 = null;
-
-			while((fila1 = reader1.readNext()) != null) 
+			String[] data = null;
+			
+			int numeroAccidentes=0;
+			
+			while(numeroAccidentes<=100 && (data = reader1.readNext()) != null) 
 			{
-
+				numeroAccidentes ++;
+				
 				int k = 0; 
 				
-				String iD= fila1[k];
+				String iD= data[k];
 				k++;
 				
-				String source = fila1[k];
+				String source = data[k];
 				k++;
 				
-				double TMC = Double.parseDouble(fila1[k]);
+				double TMC = Double.parseDouble(data[k]);
 				k++;
 				
-				double severity = Double.parseDouble(fila1[k]);
+				double severity = Double.parseDouble(data[k]);
 				k++;
 				
-				Date start_Time = fila1[k]; // 
+				Date start_Time = new SimpleDateFormat("yyyy-MM-dd").parse(data[k].substring(0, 10)); // 
 				k++;
 				
-				Date end_Time = fila1[k]; // 
+				Date end_Time = new SimpleDateFormat("yyyy-MM-dd").parse(data[k].substring(0, 10)); // 
 				k++;
 				
-				double start_Lat = Double.parseDouble(fila1[k]);
+				double start_Lat = Double.parseDouble(data[k]);
 				k++;
 				
-				double start_Lng = Double.parseDouble(fila1[k]);
+				double start_Lng = Double.parseDouble(data[k]);
 				k++;
-				double end_Lat = Double.parseDouble(fila1[k]);
-				k++;
-				
-				double end_Lng = Double.parseDouble(fila1[k]);
-				k++;
-				double distance_mi = Double.parseDouble(fila1[k]);
+				double end_Lat = Double.parseDouble(data[k]);
 				k++;
 				
-				String description = fila1[k];
+				double end_Lng = Double.parseDouble(data[k]);
+				k++;
+				double distance_mi = Double.parseDouble(data[k]);
 				k++;
 				
-				double number = Double.parseDouble(fila1[k]);
+				String description = data[k];
 				k++;
 				
-				String street = fila1[k];
+				double number = Double.parseDouble(data[k]);
 				k++;
 				
-				String side =fila1[k];
+				String street = data[k];
 				k++;
 				
-				String city = fila1[k];
+				String side =data[k];
 				k++;
 				
-				String county = fila1[k];
+				String city = data[k];
 				k++;
 				
-				String state =fila1[k];
+				String county = data[k];
 				k++;
 				
-				String zipcode = fila1[k];
+				String state =data[k];
 				k++;
 				
-				String country =fila1[k];
+				String zipcode = data[k];
 				k++;
 				
-				String timezone =fila1[k];
+				String country =data[k];
 				k++;
 				
-				String airportCode =fila1[k];
+				String timezone =data[k];
 				k++;
 				
-				Date weather_Timestamp = fila1[k]; //Carlos
+				String airportCode =data[k];
 				k++;
 				
-				double temperaturaF = Double.parseDouble(fila1[k]);
+				Date weather_Timestamp = new SimpleDateFormat("yyyy-MM-dd").parse(data[k].substring(0, 10)); //Carlos
 				k++;
 				
-				double windChillF =Double.parseDouble(fila1[k]);
+				double temperaturaF = Double.parseDouble(data[k]);
 				k++;
 				
-				double humidity = Double.parseDouble(fila1[k]);
+				double windChillF =Double.parseDouble(data[k]);
 				k++;
 				
-				double pressure =Double.parseDouble(fila1[k]);
+				double humidity = Double.parseDouble(data[k]);
 				k++;
 				
-				double visibility =Double.parseDouble(fila1[k]);
+				double pressure =Double.parseDouble(data[k]);
 				k++;
 				
-				String wind_Direction =fila1[k];
+				double visibility =Double.parseDouble(data[k]);
 				k++;
 				
-				double windSpeed =Double.parseDouble(fila1[k]);
+				String wind_Direction =data[k];
 				k++;
 				
-				double precipitation =Double.parseDouble(fila1[k]);
+				double windSpeed =Double.parseDouble(data[k]);
 				k++;
 				
-				String weatherCondition =fila1[k];
+				double precipitation =Double.parseDouble(data[k]);
 				k++;
 				
-				boolean amenity = Boolean.parseBoolean(fila1[k]);
+				String weatherCondition =data[k];
 				k++;
 				
-				boolean bump = Boolean.parseBoolean(fila1[k]);
-				k++;
-				boolean crossing = Boolean.parseBoolean(fila1[k]);
-				k++;
-				boolean giveWay = Boolean.parseBoolean(fila1[k]);
-				k++;
-				boolean junction = Boolean.parseBoolean(fila1[k]);
-				k++;
-				boolean noExit = Boolean.parseBoolean(fila1[k]);
-				k++;
-				boolean railway = Boolean.parseBoolean(fila1[k]);
-				k++;
-				boolean roundAbout = Boolean.parseBoolean(fila1[k]);
-				k++;
-				boolean station = Boolean.parseBoolean(fila1[k]);
-				k++;
-				boolean stop = Boolean.parseBoolean(fila1[k]);
-				k++;
-				boolean trafficCalming = Boolean.parseBoolean(fila1[k]);
-				k++;
-				boolean trafficSignal = Boolean.parseBoolean(fila1[k]);
-				k++;
-				boolean turningLoop = Boolean.parseBoolean(fila1[k]);
-				k++;
-				String sunriseSunset =fila1[k];
-				k++;
-				String civilTwilight =fila1[k];
-				k++;
-				String nauticalTwilight =fila1[k];
-				k++;
-				String astronomicalTwilight =fila1[k];
+				boolean amenity = Boolean.parseBoolean(data[k]);
 				k++;
 				
+				boolean bump = Boolean.parseBoolean(data[k]);
+				k++;
+				boolean crossing = Boolean.parseBoolean(data[k]);
+				k++;
+				boolean giveWay = Boolean.parseBoolean(data[k]);
+				k++;
+				boolean junction = Boolean.parseBoolean(data[k]);
+				k++;
+				boolean noExit = Boolean.parseBoolean(data[k]);
+				k++;
+				boolean railway = Boolean.parseBoolean(data[k]);
+				k++;
+				boolean roundAbout = Boolean.parseBoolean(data[k]);
+				k++;
+				boolean station = Boolean.parseBoolean(data[k]);
+				k++;
+				boolean stop = Boolean.parseBoolean(data[k]);
+				k++;
+				boolean trafficCalming = Boolean.parseBoolean(data[k]);
+				k++;
+				boolean trafficSignal = Boolean.parseBoolean(data[k]);
+				k++;
+				boolean turningLoop = Boolean.parseBoolean(data[k]);
+				k++;
+				String sunriseSunset =data[k];
+				k++;
+				String civilTwilight =data[k];
+				k++;
+				String nauticalTwilight =data[k];
+				k++;
+				String astronomicalTwilight =data[k];
+				k++;
 				
-				Accidente Accidente = new Accidente(iD, source, TMC, severity, start_Time, 
+				if(! iD.equals("ID"))
+				{
+				
+				Accidente nuevo = new Accidente(iD, source, TMC, severity, start_Time, 
 						end_Time, start_Lat, start_Lng, end_Lat, end_Lng, distance_mi,
 						description, number, street, side, city, county,
 						state , zipcode, country, timezone, airportCode, weather_Timestamp, temperaturaF,windChillF,
@@ -206,25 +215,20 @@ public class Modelo<T> {
 						amenity, bump, crossing, giveWay, junction, noExit, railway, roundAbout,station,stop,
 						trafficCalming,trafficSignal,turningLoop,sunriseSunset,civilTwilight,nauticalTwilight,astronomicalTwilight);
 				
-					arbol.put(date.toString(), nuevo);
-//				if(! fila1[0].equals("ID"))
-//				{
-//					String fecha = fila1[4].substring(0, 10);
-//					Date date = new SimpleDateFormat("yyyy-MM-dd").parse(fecha);
-//
-//					Accidente nuevo = new Accidente(date,Integer.parseInt(fila1[3]));
-//
-//					arbol.put(date.toString(), nuevo);
-//					t++;
-//
-//				}
+					arbol.put(start_Time.toString(), nuevo);
+					arbolRB.put(start_Time.toString(), nuevo);
+				}
+				System.out.println("datos:"+ numeroAccidentes);
 			}
 
-			reader1.close();
 
 		} 
 		catch (Exception e) {
+<<<<<<< HEAD
 			throw new Exception(e.getMessage() +"dssssss	");
+=======
+			e.printStackTrace();
+>>>>>>> acb81fdce88453288a633e7752d511abe8b21045
 		}
 
 	}
@@ -261,16 +265,16 @@ public class Modelo<T> {
 		ArrayList<Accidente> accidentes = (ArrayList<Accidente>)arbol.get(key);
 		for (int i = 0; i < accidentes.size(); i++) 
 		{
-			if (accidentes.get(i).darSeverity() == 1)
+			if (accidentes.get(i).getSeverity() == 1)
 			{
 				gravedad1++;
 			}
 			
-			else if (accidentes.get(i).darSeverity() == 2)
+			else if (accidentes.get(i).getSeverity() == 2)
 			{
 				gravedad2++;
 			}
-			else if (accidentes.get(i).darSeverity() == 3)
+			else if (accidentes.get(i).getSeverity() == 3)
 			{
 				gravedad3++;
 			}
@@ -291,7 +295,22 @@ public class Modelo<T> {
 
 		for (int i = 0; i < lista.size(); i++) 
 		{
-			vista.printMessage("Fecha: " + lista.get(i).darFechaInicio().toString() + " Severidad: "+ lista.get(i).darSeverity());
+			vista.printMessage("Fecha: " + lista.get(i).getStart_Time().toString() + " Severidad: "+ lista.get(i).getSeverity());
 		}
 	}
+	
+	public int buscarAccidentesFecha(Date pFecha)
+	{
+		ArrayList<Accidente> lista;
+		int contador = 0;
+		
+		for (int i = 0; i < arbol.size() ; i++)
+		{
+			Date actual = arbol.get(pFecha);
+			if ()
+		}
+		
+		return contador;
+	}
+
 }

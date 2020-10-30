@@ -259,7 +259,7 @@ public class   BinarySearchTree <K extends Comparable<K>, V> implements TablaSim
 		
 		int comparacion = key.compareTo(x.llave);
 		
-		if      (comparacion < 0) 
+		if(comparacion < 0) 
 			{
 			x.izquierda  = putt(x.izquierda,  key, val);
 			}
