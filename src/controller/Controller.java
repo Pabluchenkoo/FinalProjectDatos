@@ -24,7 +24,7 @@ public class Controller {
 	public Controller ()
 	{
 		view = new View();
-		modelo = new Modelo(1000000);
+		modelo = new Modelo();
 	}
 		
 	public void run()
@@ -40,90 +40,100 @@ public class Controller {
 
 			int option = lector.nextInt();
 			switch(option){
-				case 1:
-					view.printMessage("Cargar datos: ");
-				    modelo.cargarBST(); 
-				    view.printMessage("Datos cargados");						
-					break;
+			case 1:
+				view.printMessage("Cargar datos: ");
+			    try {
+					modelo.leerArchivo();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} 
+			    view.printMessage("Datos cargados");						
+				break;
 
+			
+			case 2:
+				try 
+				{
+				view.printMessage("Ingresar primer id: ");
+				dato = lector.next();
+                int id1 = Integer.parseInt(dato);
+                view.printMessage("Ingresar segundo id: ");
+				dato = lector.next();
+                int id2 = Integer.parseInt(dato);
+				modelo.REQ1(id1, id2);;
+				} 
+				catch (Exception e) 
+				{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				}
+							
+				break;
+
+			case 3:
+				try 
+				{
+				view.printMessage("Ingrese el tiempo minimo en minutos: ");
+				dato = lector.next();
+                int minutosMin = Integer.parseInt(dato);
+                view.printMessage("Ingrese el tiempo maximo en minutos: ");
+				dato = lector.next();
+                int minutosMax = Integer.parseInt(dato);
+                view.printMessage("Ingrese el id de la estacion: ");
+				dato = lector.next();
+                int idEstacion = Integer.parseInt(dato);
+                view.printMessage("Cantidad de impresiones: ");
+				dato = lector.next();
+                Integer cantidadImpresiones = Integer.parseInt(dato);
+				modelo.REQ2(minutosMin, minutosMax, idEstacion, cantidadImpresiones);
+				} 
+				catch (Exception e) 
+				{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				}
+							
+				break;					
 				
-				case 2:
-					try 
-					{
-					view.printMessage("Ingresar fecha en el formato yyyy-MM-dd:");
-					dato = lector.next();
-                    Date fecha = new SimpleDateFormat("yyyy-MM-dd").parse(dato);
-					modelo.REQ1(fecha);
-					} 
-					catch (Exception e) 
-					{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					}
-								
-					break;
 
-				case 3:
-					try 
-					{
-					view.printMessage("Ingresar fecha en el formato yyyy-MM-dd:");
-					dato = lector.next();
-                    Date fecha = new SimpleDateFormat("yyyy-MM-dd").parse(dato);
-					modelo.REQ2(fecha);
-					} 
-					catch (Exception e) 
-					{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					}
-								
-					break;					
-					
+			case 4:
+				try 
+				{
+				modelo.REQ3();
+				} 
+				catch (Exception e) 
+				{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				}
+							
+				break;
 
-				case 4:
-					try 
-					{
-					view.printMessage("Ingresar fecha1 en el formato yyyy-MM-dd:");
+			case 5: 
+				try 
+				{
+					view.printMessage("Ingresar rango: ");
 					dato = lector.next();
-                    Date fecha1 = new SimpleDateFormat("yyyy-MM-dd").parse(dato);
-                    view.printMessage("Ingresar fecha2 en el formato yyyy-MM-dd:");
-					dato = lector.next();
-                    Date fecha2 = new SimpleDateFormat("yyyy-MM-dd").parse(dato);
-					modelo.REQ3(fecha1,fecha2);
-					} 
-					catch (Exception e) 
-					{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					}
-								
-					break;
+                    int rango = Integer.parseInt(dato);
+					modelo.REQ5(rango);;
+				} 
+				catch (Exception e) 
+				{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				}
+				break;
+			case 6: 
+				view.printMessage("--------- \n Hasta pronto !! \n---------"); 
+				lector.close();
+				fin = true;
+				break;	
 
-				case 5: 
-					try 
-					{
-					view.printMessage("Ingresar hora:");
-					dato = lector.next();	
-				
-					modelo.REQ5(dato);
-					} 
-					catch (Exception e) 
-					{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					}
-					break;
-				case 6: 
-					view.printMessage("--------- \n Hasta pronto !! \n---------"); 
-					lector.close();
-					fin = true;
-					break;	
-
-				default: 
-					view.printMessage("--------- \n Opcion Invalida !! \n---------");
-					break;
+			default: 
+				view.printMessage("--------- \n Opcion Invalida !! \n---------");
+				break;
 			}
-		}
-		
 	}	
+	}
 }

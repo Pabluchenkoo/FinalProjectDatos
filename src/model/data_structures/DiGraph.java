@@ -1,5 +1,8 @@
 package model.data_structures;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DiGraph<K extends Comparable<K>,V extends Comparable<V>> {
 
 
@@ -21,8 +24,8 @@ public class DiGraph<K extends Comparable<K>,V extends Comparable<V>> {
 	}
 
 	/**
-	 * Retorna true si el vértice con id
-	suministrado está en el grafo
+	 * Retorna true si el vÃ©rtice con id
+	suministrado estÃ¡ en el grafo
 	 * @param id
 	 * @return
 	 */
@@ -38,7 +41,7 @@ public class DiGraph<K extends Comparable<K>,V extends Comparable<V>> {
 
 
 	/**
-	 * Devuelve el número de vértices en el grafo
+	 * Devuelve el nÃºmero de vÃ©rtices en el grafo
 	 * @return
 	 */
 	public int numVertices() 
@@ -47,7 +50,7 @@ public class DiGraph<K extends Comparable<K>,V extends Comparable<V>> {
 	}
 
 	/**
-	 * Devuelve el número de arcos en el grafo
+	 * Devuelve el nÃºmero de arcos en el grafo
 	 * @return
 	 */
 	public int numEdges() 
@@ -56,7 +59,7 @@ public class DiGraph<K extends Comparable<K>,V extends Comparable<V>> {
 	}
 
 	/**
-	 * Añade un vértice al grafo con su
+	 * AÃ±ade un vÃ©rtice al grafo con su
 identificador y valor
 	 * @param id
 	 * @param value
@@ -73,8 +76,8 @@ identificador y valor
 	}
 
 	/**
-	 * Añade un arco dirigido pesado entre el
-vértice source y dest, con peso weight. Si el
+	 * AÃ±ade un arco dirigido pesado entre el
+vÃ©rtice source y dest, con peso weight. Si el
 arco YA existe se modifica su peso.
 	 * @param source
 	 * @param dest
@@ -82,16 +85,16 @@ arco YA existe se modifica su peso.
 	 */
 	public void addEdge(K source, K dest, double weight) throws Exception {
 
-		// Encuentra los vértices de acuerdo a su ID
+		// Encuentra los vÃ©rtices de acuerdo a su ID
 		Vertex<K,V> fuente = getVertex(source);
 		Vertex<K,V> destino = getVertex(dest);
 
 		if(fuente==null|| destino == null) {
-			throw new Exception("Los vértices no existen");
+			throw new Exception("Los vÃ©rtices no existen");
 		}
 
 		// Crea el arco entre los vertices fuente y destino
-		Edge<K,V> arcoNuevo = new Edge<K, V>(fuente, destino, weight);
+		Edge<K,V> arcoNuevo = new Edge<K, V>(fuente, destino, weight, max);
 
 		// Revisa si ya hay un arco que vaya entre fuente y destino, en cuyo caso cambia su peso
 		// De lo contrario, agrega el arco nuevo.
@@ -103,15 +106,15 @@ arco YA existe se modifica su peso.
 			numEdges++;
 		}
 		
-		destino.increaseIndegree();
+		destino.indegree();
 
 
 
 	}
 
 	/**
-	 * Retorna el vértice a partir de su
-identificador único
+	 * Retorna el vÃ©rtice a partir de su
+identificador Ãºnico
 	 * @param id
 	 * @return
 	 */
@@ -126,7 +129,7 @@ identificador único
 	}
 
 	/**
-	 * Retorna el arco entre los vértices idS y idD
+	 * Retorna el arco entre los vÃ©rtices idS y idD
 (si existe). Retorna null si no existe.
 	 * @param idS
 	 * @param idD
@@ -142,18 +145,18 @@ identificador único
 
 	/**
 	 * Devuelve una lista de arcos adyacentes
-(salientes) al vértice con id
+(salientes) al vÃ©rtice con id
 	 * @param id
 	 * @return
 	 */
 	public ArregloDinamico<Edge<K,V>> adjacentEdges(K id) {
 		Vertex<K,V> vertice = getVertex(id);
-		return vertice.edges();
+		return (ArregloDinamico<Edge<K, V>>) vertice.edges();
 	}
 
 	/**
-	 * Devuelve una lista de vértices adyacentes
-(salientes) al vértice con id
+	 * Devuelve una lista de vÃ©rtices adyacentes
+(salientes) al vÃ©rtice con id
 	 * @param id
 	 * @return
 	 */
@@ -163,8 +166,8 @@ identificador único
 	}
 
 	/**
-	 * Devuelve el grado de entrada del vértice
-vertex (número de arcos entrantes)
+	 * Devuelve el grado de entrada del vÃ©rtice
+vertex (nÃºmero de arcos entrantes)
 	 * @param vertex
 	 * @return
 	 */
@@ -174,8 +177,8 @@ vertex (número de arcos entrantes)
 	}
 
 	/**
-	 * Devuelve el grado de salida del vértice
-vertex (número de arcos salientes)
+	 * Devuelve el grado de salida del vÃ©rtice
+vertex (nÃºmero de arcos salientes)
 	 * @param vertex
 	 * @return
 	 */
@@ -197,7 +200,7 @@ grafo
 			e.printStackTrace();
 		}
 		for(int i=1; i<=arco.size(); i++) {
-			ArregloDinamico<Edge<K,V>> edgesi = arco.darElemento(i).edges();
+			ArregloDinamico<Edge<K,V>> edgesi = (ArregloDinamico<Edge<K, V>>) arco.darElemento(i).edges();
 			for(int j=1; j<=edgesi.size();j++) {
 				edges.agregarAlFinal(edgesi.darElemento(j));
 			}
@@ -206,10 +209,11 @@ grafo
 	}
 
 	/**
-	 * Devuelve una lista con los vértices del grafo
+	 * Devuelve una lista con los vÃ©rtices del grafo
 	 * @return
 	 */
-	public ArregloDinamico<Vertex<K,V>> vertices(){
+	public ArregloDinamico<Vertex<K,V>> vertices()
+	{
 		return arco;
 	}
 

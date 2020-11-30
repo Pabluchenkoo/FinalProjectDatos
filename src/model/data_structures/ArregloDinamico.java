@@ -340,6 +340,11 @@ public class ArregloDinamico <T extends Comparable<T>> implements IArregloDinami
 		return 0;
 	}
 
+	public Integer get(int cont) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 	
 //	public int BinarioPresente ( T elemento )

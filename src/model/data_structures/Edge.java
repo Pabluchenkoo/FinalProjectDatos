@@ -1,11 +1,13 @@
 package model.data_structures;
 
-public class Edge<K extends Comparable<K>, V extends Comparable<V>> implements Comparable<Edge<K,V>>{
+public class Edge<K extends Comparable<K>, V > implements Comparable<Edge<K,V>>{
 
 
     private Vertex<K,V> source;
 
     private Vertex<K,V> dest;
+    
+    private int nViajes;
 
     private double weight;
 
@@ -17,10 +19,11 @@ vértice dest con peso weight
      * @param weight
      * @throws Exception 
      */
-    public Edge(Vertex<K,V> source, Vertex<K,V> dest, double weight) throws Exception {
+    public Edge(Vertex<K,V> source, Vertex<K,V> dest, double weight, int pNViajes) throws Exception {
         this.source = source;
         this.dest = dest;
         this.weight = weight;
+        this.nViajes = pNViajes;
     }
 
     /**
@@ -45,6 +48,11 @@ vértice dest con peso weight
      */
     public double weight() {
         return weight;
+    }
+    
+    public int darNViajes()
+    {
+    	return nViajes;
     }
 
     /**

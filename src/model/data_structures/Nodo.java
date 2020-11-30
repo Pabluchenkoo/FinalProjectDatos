@@ -17,7 +17,7 @@ public class Nodo <T extends Comparable<T>>
 		siguiente=next;
 	}
 	
-	public Nodo darsiguiente ()
+	public Nodo darSiguiente ()
 	{
 		return siguiente;
 	}
@@ -54,7 +54,7 @@ public class Nodo <T extends Comparable<T>>
 		else if(posicion == 1)
 		{
 			retorno = (T) siguiente.darInfo();
-			siguiente = siguiente != null? siguiente.darsiguiente():null;
+			siguiente = siguiente != null ?  siguiente.darSiguiente() :null;
 		}
 		return retorno;
 	}

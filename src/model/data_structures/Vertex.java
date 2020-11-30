@@ -1,154 +1,188 @@
 package model.data_structures;
 
-public class Vertex<K extends Comparable<K>, V extends Comparable<V>> implements Comparable<Vertex<K,V>> {
 
+import java.util.ArrayList;
+import java.util.List;
+
+public class Vertex<K extends Comparable<K>,V > 
+{
+	
+	private boolean marked;
+	
+	private List<Vertex<K,V>> vertices;
+	
+	private V valor;
+	
 	private K id;
-
-	private V value;
-
-	private boolean mark;
 	
-	private int indegree;
+	private int gradoIn;
 	
-	private ArregloDinamico<Edge<K,V>> arcosSalientes;
-
-
-	/**
-	 * Crea un vértice con identificador único y
-valor (información asociada), el vértice
-inicia desmarcado
-	 * @param id
-	 * @param value
-	 */
-	public Vertex(K id, V value) 
-	{
+	private int gradoOut;
+	
+	private int viajesIn;
+	
+	private int viajesOut;
+	
+	private ArrayList<Edge<K, V>> arcos;
+	
+	
+	public Vertex(K id, V pValor){
+		
 		this.id = id;
-		this.value = value;
-		this.mark = false;
-		arcosSalientes = new ArregloDinamico<Edge<K,V>>(indegree); 
+		
+		valor = pValor;
+		
+		marked = false;
+		
+		arcos = new ArrayList<Edge<K,V>>();
+		
+		vertices = new ArrayList<Vertex<K,V>>();
+		
+		gradoIn = 0;
+		
+		gradoOut = 0;
+		
+		viajesIn = 0;
+		
+		viajesOut = 0;
 	}
-
+	
 	/**
-	 * Devuelve el identificador del vértice
-	 * @return
+	 * Devuelve el identificador del vertice
+	 * @return identificador del vertice
 	 */
-	public K getId() 
-	{
+	public  K getId() {
 		return id;
 	}
-
+	
 	/**
-	 * Devuelve el valor asociado al vértice
-	 * @return
+	 * Devuelve el valor asociado al vertice
+	 * @return valor asociado al vertice
 	 */
-	public V getValue() 
-	{
-		return value;
+	public V getInfo() {
+		return valor;
 	}
-
+	
 	/**
-	 * Retorna si el vértice está marcado o no
-	 * @return
+	 * Retorna si el vertice esta marcado o no
+	 * @return true en el caso de marcado, false en el caso contrario
 	 */
-	public boolean getMark() 
-	{
-		return mark;
+	public boolean getMark() {
+		return marked;
 	}
-
+	
 	/**
-	 * Agrega un arco adyacente saliente al vértice
+	 *  Agrega un arco adyacente al vertice
+	 * @param edge arco adyacente que se quiere agregar al vertice
 	 */
 	public void addEdge( Edge<K,V> edge ) 
 	{
-		arcosSalientes.agregarAlFinal(edge);;
-
-	}
-	/**
-	 * Marca el vértice
-	 */
-	public void mark() 
-	{
-		this.mark = true;
-	}
-
-	/**
-	 * Desmarca el vértice
-	 */
-	public void unmark() 
-	{
-		this.mark = false;
-	}
-
-	/**
-	 * Retorna el número de arcos (salientes) del vértice
-	 * @return
-	 */
-	public int outdegree() 
-	{
-		return arcosSalientes.size();
-	}
-
-	/**
-	 * Retorna el número de arcos (entrantes) del vértice
-	 * @return
-	 */
-	public int indegree() 
-	{
-		return indegree;
+		arcos.add(edge);
 	}
 	
-	public void increaseIndegree() 
+	/**
+	 * Suma 1 al gradoOut, o sea que se cuenta un arco saliente mas
+	 */
+	public void UnOutDegreeMas()
 	{
-		indegree++;
+		gradoOut++;
+	}
+	
+	public int getViajesLlegando() {
+		return viajesIn;
 	}
 
-	/**
-	 * Retorna el arco con el vértice vertex (si existe). Retorna null si no existe.
-	 * @param vertex
-	 * @return
-	 */
-	public Edge<K,V> getEdge(K vertex){
-		Edge<K,V> arcoBuscado = null;
-		for(int i=1; i<=arcosSalientes.size() && arcoBuscado == null; i++) 
+	public void setViajesLlegando(int viajesLlegando) {
+		this.viajesIn = viajesLlegando;
+	}
+
+	public int getViajesSaliendo() {
+		viajesSaliendo();
+		return viajesOut;
+	}
+
+	public void setViajesSaliendo(int viajesSaliendo) {
+		this.viajesOut = viajesSaliendo;
+	}
+
+	public void viajesSaliendo()
+	{
+		for (Edge<K, V> edge : arcos) {
+			viajesOut += edge.darNViajes();
+		}
+	}
+	
+	public void UnInDegreeMas()
+	{
+		gradoIn++;
+	}
+	
+	public void addVertex( Vertex<K,V> vertice)
+	{
+		vertices.add(vertice);
+	}
+	
+	public void mark() {
+		marked = true;
+	}
+	
+	public void unmark() {
+		marked = false;
+	}
+	
+	
+	public int outdegree() {
+		return gradoOut;
+	}
+	
+	
+	public int indegree() {
+		return gradoIn;
+	}
+	
+	
+	
+	public Edge<K,V> getEdge(Vertex<K,V> vertex){
+		for(int i = 0; i<arcos.size(); i++)
 		{
-			if(arcosSalientes.darElemento(i).getDest().getId().equals(vertex)) 
+			if(arcos.get(i).getDest().equals(vertex))
 			{
-				arcoBuscado = arcosSalientes.darElemento(i);
+				return arcos.get(i);
 			}
 		}
-		return arcoBuscado;
+		return null;
 	}
-
-	/**
-	 * Retorna una lista con sus vértices
-adyacentes (salientes)
-	 * @return
-	 */
-	public ArregloDinamico<Vertex<K,V>> vertices(){
-		ArregloDinamico<Vertex<K,V>> vertices = new ArregloDinamico<Vertex<K,V>>(indegree);
-		for(int i=1; i<=arcosSalientes.size(); i++) {
-				vertices.agregarAlFinal(arcosSalientes.darElemento(i).getDest());
+	
+	public Edge<K,V> getEdge(K id){
+		for(int i = 0; i<arcos.size(); i++)
+		{
+			if(arcos.get(i).getDest().getId()==id)
+			{
+				return arcos.get(i);
+			}
 		}
+		return null;
+	}
+	
+	 
+	public List<Vertex<K,V>> vertices(){
 		return vertices;
 	}
-
-	/**
-	 * Retorna una lista con sus arcos adyacentes
-(salientes)
-	 * @return
-	 */
-	public ArregloDinamico<Edge<K,V>> edges()
-	{
-		return arcosSalientes;
+	
+	 
+	public List<Edge<K,V>> edges(){
+		return arcos;
 	}
-
-	@Override
-	public int compareTo(Vertex<K, V> o) {
-		return value.compareTo(o.getValue());
+	
+	public ArrayList<K> darIdsAdyacentes() {
+		ArrayList<K> rta = new ArrayList<K>();
+		for (Edge<K,V> act : arcos) {
+			rta.add(act.getDest().getId());
+		}
+		return rta;
 	}
-
-	public String toString() {
-		return "("+id.toString()+","+value.toString()+")";
-	}
+	
+	
+	
 	
 }
