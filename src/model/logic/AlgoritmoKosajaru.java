@@ -6,6 +6,7 @@ import java.util.Comparator;
 
 import model.data_structures.ArregloDinamico;
 import model.data_structures.DiGraph;
+import model.data_structures.Edge;
 import model.data_structures.TablaHashLinearProbing;
 import model.data_structures.Vertex;
 
@@ -14,7 +15,7 @@ import model.data_structures.Vertex;
 public class AlgoritmoKosajaru <K extends Comparable<K>, V> {
 
 	private TablaHashLinearProbing <K, Vertex<K,V> > tablaHash;
-	private ArrayList <Vertex<K,V>> vectores;
+	private ArregloDinamico <Vertex<K,V>> vectores;
 	private TablaHashLinearProbing<Integer, Boolean> marcados;
 	private TablaHashLinearProbing<Integer, Integer> clusters;
 	
@@ -22,19 +23,19 @@ public class AlgoritmoKosajaru <K extends Comparable<K>, V> {
 
 	public AlgoritmoKosajaru(DiGraph G)
 	{
-		tablaHash = G.darTablaHashAct();
 		
-		vectores = (ArrayList<Vertex <K, V>>) tablaHash.valueSet();
+		vectores = (ArregloDinamico<Vertex <K, V>>) tablaHash.valueSet();
 		
 		
 		marcados = new TablaHashLinearProbing<Integer,Boolean>(vectores.size());
 		
-		for (Vertex<K, V> vertex : vectores) 
+		for (int i = 0; i< vectores.darTamano();i++) //Vertex<K, V> vertex : vectores) 
 		{
+			Vertex<K, V> vertex = vectores.darElemento(i);
 			marcados.put((Integer) vertex.getId(), false);
 		}
 		
-		DiGraph graphoReves = G.darVuelta();
+		DiGraph graphoReves = G;
 		
 		ArrayList<Integer> order = DFOOrder(graphoReves, (int) tablaHash.darPrimerElemento().getId()); 
 		
@@ -73,11 +74,12 @@ public class AlgoritmoKosajaru <K extends Comparable<K>, V> {
 		marcados.remove(idVerticeAct);
 		marcados.put(idVerticeAct, true);
 		
-		ArrayList<Integer> ordenDeVisita = G.getVertex(idVerticeAct).darIdsAdyacentes();
-		Comparator<Integer> cmp = Collections.reverseOrder();
-		Collections.sort(ordenDeVisita, cmp);
+		ArregloDinamico<Integer> ordenDeVisita = G.getVertex(idVerticeAct).darIdsAdyacentes();
+
 		
-		for (Integer w : ordenDeVisita) {
+		for (int i = 0; i < ordenDeVisita.darTamano(); i++) //Integer w : ordenDeVisita) 
+		{
+			Integer w = ordenDeVisita.darElemento(i);
 			if (!marcados.get(w)) {
 				DFOORderRecursivo(G, w);
 				rtaDFO.add(w);
@@ -86,12 +88,15 @@ public class AlgoritmoKosajaru <K extends Comparable<K>, V> {
 	}
 
 	private Integer darPrimeroEnFalse() {
-		ArrayList<Boolean> valMarcados = (ArrayList<Boolean>) marcados.valueSet();
+		ArregloDinamico<Boolean> valMarcados = (ArregloDinamico<Boolean>) marcados.valueSet();
 		int cont = 0 ;
-		for (Boolean boolean1 : valMarcados) {
+		for (int i =0; i < valMarcados.darTamano(); i++)//Boolean boolean1 : valMarcados) 
+			{
+			Boolean boolean1 = false;
 			if(boolean1==false) return marcados.keySet().get(cont);
 			cont++;
-		}
+		
+			}
 		return null;
 	}
 
@@ -101,11 +106,12 @@ public class AlgoritmoKosajaru <K extends Comparable<K>, V> {
 		marcados.put(idVerticeAct, false);
 		clusters.put(idVerticeAct, count);
 		
-		ArrayList<Integer> ordenDeVisita = G.getVertex(idVerticeAct).darIdsAdyacentes();
+		ArregloDinamico<Integer> ordenDeVisita = G.getVertex(idVerticeAct).darIdsAdyacentes();
 		Comparator<Integer> cmp = Collections.reverseOrder();
-		Collections.sort(ordenDeVisita, cmp);
 		
-		for (Integer w : ordenDeVisita) {
+		for (int i = 0; i < ordenDeVisita.darTamano(); i++)
+		{
+			Integer w = ordenDeVisita.darElemento(i);
 			if (marcados.get(w))
 				dfs(G, w);
 		}
@@ -134,32 +140,50 @@ public class AlgoritmoKosajaru <K extends Comparable<K>, V> {
 	
 	
 	
-	public ArrayList<K> darIDsEnCluster(K cluster){
-		ArrayList<K> rta = new ArrayList<K>();
-		ArrayList<K> llaves =  (ArrayList<K>) clusters.keySet();
-		ArrayList<K> valores = (ArrayList<K>)clusters.valueSet();
-		int pos = 0;
-		for (K k : valores) {
-			if(cluster.equals(k)) rta.add(llaves.get(pos));
-			pos++;
-		}
+	public ArregloDinamico<K> darIDsEnCluster(K cluster){
+		ArregloDinamico<K> rta = new ArregloDinamico<K>(10000);
+		ArregloDinamico<K> llaves =  (ArregloDinamico<K>) clusters.keySet();
+		ArregloDinamico<K> valores = (ArregloDinamico<K>)clusters.valueSet();
+
+		for (int i =0; i < valores.darTamano();i++) //K k : valores) 
+			{
+			K k = valores.darElemento(i);
+			if(cluster.equals(k))
+			{
+				K aAgregar = llaves.darElemento(i);
+				rta.agregar(aAgregar);
+			}
+				
+
+		
+			}
 		return rta;
 	}
 	
 	public DiGraph<K,V> formarGrafoParaCluster(K cluster) {
 		
-		DiGraph<K, V> rta = new DiGraph<K, V>();
-		ArrayList<K> idsVertices = darIDsEnCluster(cluster);
-		for (K id : idsVertices) {
-			rta.insertVertex(id, tablaHash.get(id).getInfo());
+		DiGraph<K,V> rta = new DiGraph<K, V>();
+		
+		ArregloDinamico<K> idsVertices = darIDsEnCluster(cluster);
+		for (int i = 0; i < idsVertices.darTamano();i++)//K id : idsVertices) 
+		{
+			K iD = idsVertices.darElemento(i);
+			rta.insertVertex(iD, tablaHash.get(iD).getInfo());
 		}
 		
-		for (K id : idsVertices) {
+		for ( int i =0; i < idsVertices.darTamano();i++)//K id : idsVertices ) 
+		{
+			K id = idsVertices.darElemento(i);
 			Vertex<K, V> act = tablaHash.get(id);
-			ArrayList<Edge<K,V>> edgesAct =  (ArrayList<Edge<K, V>>) act.edges();
-			for (Edge<K,V> edgeAct : edgesAct) {
+			ArregloDinamico<Edge<K,V>> edgesAct =  (ArregloDinamico<Edge<K, V>>) act.edges();
+			for (int j = 0 ; j < edgesAct.darTamano(); j++)		//Edge<K,V> edgeAct : edgesAct) 
+			{
+				Edge<K,V> edgeAct = edgesAct.darElemento(j);
 				K idDestino = (K)edgeAct.getDest().getId();
-				if(idsVertices.contains(idDestino)) rta.addEdge(id, idDestino, edgeAct.weight());
+				if(idsVertices.estaPresente(idDestino) == 1)
+					{
+					rta.addEdge(id, idDestino, edgeAct.weight());
+					}
 			}
 		}
 		

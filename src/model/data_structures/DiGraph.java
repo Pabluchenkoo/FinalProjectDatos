@@ -3,7 +3,8 @@ package model.data_structures;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DiGraph<K extends Comparable<K>,V extends Comparable<V>> {
+public class DiGraph < K extends Comparable<K>, V extends Comparable<V>> 
+{
 
 
 	int max = 1000;

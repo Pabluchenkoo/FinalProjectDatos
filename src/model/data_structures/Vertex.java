@@ -1,15 +1,15 @@
 package model.data_structures;
 
 
-import java.util.ArrayList;
-import java.util.List;
 
-public class Vertex<K extends Comparable<K>,V > 
+
+
+public class Vertex<K extends Comparable<K>,V > implements Comparable <Vertex<K,V>>
 {
 	
 	private boolean marked;
 	
-	private List<Vertex<K,V>> vertices;
+	private ArregloDinamico<Vertex<K,V>> vertices;
 	
 	private V valor;
 	
@@ -23,7 +23,7 @@ public class Vertex<K extends Comparable<K>,V >
 	
 	private int viajesOut;
 	
-	private ArrayList<Edge<K, V>> arcos;
+	private ArregloDinamico<Edge<K, V>> arcos;
 	
 	
 	public Vertex(K id, V pValor){
@@ -34,9 +34,9 @@ public class Vertex<K extends Comparable<K>,V >
 		
 		marked = false;
 		
-		arcos = new ArrayList<Edge<K,V>>();
+		arcos = new ArregloDinamico<Edge<K,V>>(10000);
 		
-		vertices = new ArrayList<Vertex<K,V>>();
+		vertices = new ArregloDinamico<Vertex<K,V>>(10000);
 		
 		gradoIn = 0;
 		
@@ -77,7 +77,7 @@ public class Vertex<K extends Comparable<K>,V >
 	 */
 	public void addEdge( Edge<K,V> edge ) 
 	{
-		arcos.add(edge);
+		arcos.agregar(edge);
 	}
 	
 	/**
@@ -107,7 +107,9 @@ public class Vertex<K extends Comparable<K>,V >
 
 	public void viajesSaliendo()
 	{
-		for (Edge<K, V> edge : arcos) {
+		for (int i = 0 ; i < arcos.darTamano(); i ++) //Edge<K, V> edge : arcos) 
+		{
+			Edge<K, V> edge = arcos.darElemento(i);
 			viajesOut += edge.darNViajes();
 		}
 	}
@@ -119,7 +121,7 @@ public class Vertex<K extends Comparable<K>,V >
 	
 	public void addVertex( Vertex<K,V> vertice)
 	{
-		vertices.add(vertice);
+		vertices.agregar(vertice);
 	}
 	
 	public void mark() {
@@ -145,9 +147,9 @@ public class Vertex<K extends Comparable<K>,V >
 	public Edge<K,V> getEdge(Vertex<K,V> vertex){
 		for(int i = 0; i<arcos.size(); i++)
 		{
-			if(arcos.get(i).getDest().equals(vertex))
+			if(arcos.darElemento(i).getDest().equals(vertex))
 			{
-				return arcos.get(i);
+				return arcos.darElemento(i);
 			}
 		}
 		return null;
@@ -156,30 +158,42 @@ public class Vertex<K extends Comparable<K>,V >
 	public Edge<K,V> getEdge(K id){
 		for(int i = 0; i<arcos.size(); i++)
 		{
-			if(arcos.get(i).getDest().getId()==id)
+			if(arcos.darElemento(i).getDest().getId()==id)
 			{
-				return arcos.get(i);
+				return arcos.darElemento(i);
 			}
 		}
 		return null;
 	}
 	
 	 
-	public List<Vertex<K,V>> vertices(){
+	public ArregloDinamico<Vertex<K,V>> vertices()
+	{
 		return vertices;
 	}
 	
 	 
-	public List<Edge<K,V>> edges(){
+	public ArregloDinamico<Edge<K,V>> edges(){
 		return arcos;
 	}
 	
-	public ArrayList<K> darIdsAdyacentes() {
-		ArrayList<K> rta = new ArrayList<K>();
-		for (Edge<K,V> act : arcos) {
-			rta.add(act.getDest().getId());
+	public ArregloDinamico<K> darIdsAdyacentes() 
+	{
+		ArregloDinamico<K> rta = new ArregloDinamico<K>(10000);
+		
+		for (int i = 0 ; i < arcos.darTamano(); i++) //Edge<K,V> act : arcos) 
+		{
+			Edge<K,V> act = arcos.darElemento(i);
+			rta.agregar(act.getDest().getId());
 		}
 		return rta;
+	}
+
+	@Override
+	public int compareTo(Vertex<K, V> o) 
+	{
+		
+		return id.compareTo(o.id);
 	}
 	
 	
