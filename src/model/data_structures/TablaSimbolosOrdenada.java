@@ -2,7 +2,7 @@ package model.data_structures;
 
 import java.util.ArrayList;
 
-public interface TablaSimbolosOrdenada<K extends Comparable<K>,V> 
+public interface TablaSimbolosOrdenada<K extends Comparable<K>,V extends Comparable<V>> 
 {
 
 	/* 

@@ -59,7 +59,7 @@ public class TablaHashLinearProbing < K extends Comparable<K>, V extends Compara
 		// TODO Auto-generated method stub
 		int posicion = hash(pLlave);
 		NodoTablas<K,V> actual = array.obtenerElementoPos(posicion);
-		for (posicion=posicion; actual != null && pLlave.equals(actual.getKey()) ; posicion++)
+		for (posicion = posicion; actual != null && pLlave.equals(actual.getKey()) ; posicion++)
 		{
 			return actual.getValue();
 		}

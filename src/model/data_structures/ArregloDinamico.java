@@ -287,7 +287,11 @@ public class ArregloDinamico <T extends Comparable<T>> implements IArregloDinami
 		while(i < tamanoAct && respuesta == -1)
 		{
 			if(elementos[i].equals(elemento))
-				respuesta = i;
+			{
+			
+				respuesta = 1;
+				
+			}
 			i++;
 		}
 

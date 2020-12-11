@@ -48,10 +48,10 @@ public class Controller {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} 
-			    view.printMessage("Datos cargados");						
+			    //view.printMessage("Datos cargados");						
 				break;
 
-			
+			/*
 			case 2:
 				try 
 				{
@@ -135,5 +135,8 @@ public class Controller {
 				break;
 			}
 	}	
+	}*/
+			}
+		}
 	}
 }
