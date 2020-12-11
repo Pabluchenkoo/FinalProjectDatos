@@ -1,118 +1,247 @@
 package model.data_structures;
 
+import model.logic.Extras;
 
-public class TablaHashLinearProbing < K extends Comparable<K>, V extends Comparable<V>> implements TablaSimbolos<K, V> {
+public class TablaHashLinearProbing < K extends Comparable<K>, V extends Comparable<V>> implements TablaSimbolos<K, V> 
+{
+	
+	
+	/**
+	 * Representa el factor de carga actual.
+	 */
+	private double factorDeCarga;
 
-	private double loadFactor;
+	/**
+	 * Representa el total de elementos del mapa.
+	 */
+	private int totalElementos;
+
+	/**
+	 * Representa el arreglo utilizado en el mapa;
+	 */
+
+	private ArregloDinamico<NodoTablas<K,V>> mapa;
+
+	/**
+	 * Representa la constante a utilizada en el MAD.
+	 */
+	private int a;
+
+	/**
+	 * Representa la constante b utilizada en el MAD.
+	 */
+	private int b;
+
+	/**
+	 * Representa la constante p utilizada en el MAD.
+	 */
+	private int p;
+
+	/**
+	 * Representa la constante m utilizada en el MAD.
+	 */
+	private int m;
 	
-	private static final double MAXIMUM_LOAD_FACTOR = 0.75;
-	
-	private int N = 1; // number of key-value pairs in the table
-	
-	private int M=1; // size of linear-probing table  
-	
-	private ArregloDinamico<NodoTablas <K,V>> array;
-	
-	private int numeroRehashes;
-	
-	public TablaHashLinearProbing (int size)
+	/**
+	 * Representa el numero de rehash desde que se creo.
+	 */
+	private int nreHash; 
+
+	/**
+	 * Constructor onstructor de la clase.
+	 * @param size. Tamano inicial de la clase.
+	 */
+	public TablaHashLinearProbing( int size ) 
 	{
-		array = new ArregloDinamico<NodoTablas<K,V>>(M);
+		m = Extras.getNextPrime(2*size);
+		p = Extras.getNextPrime(m);
+		a  = (int) (Math.random() * (p-1)+1);
+		b  = (int) (Math.random() * (p-1)+1);
+		mapa = new ArregloDinamico<NodoTablas<K,V>> (m);
 	}
 
-	@Override
-	public void put(K pLlave, V pValor) {
-		// TODO Auto-generated method stu
-	    
-		if((darFactorDeCarga() + (1/M)) >= MAXIMUM_LOAD_FACTOR)
+	/**
+	 * Mete un elemento al mapa.
+	 * @param key. LLave del nodo.
+	 * @param value. Valor del nodo.
+	 */
+	public void put(K key, V value) 
+	{
+		if((darFactorDeCarga() + (1/m)) >= 0.75)
+			rehash( );
+		
+		int pos = getPos(key);
+		NodoTablas<K,V> act = mapa.obtenerElementoPos(pos);
+		
+		if(act == null || act.getKey().equals("EMPTY"))
 		{
-			rehash();
+			NodoTablas<K,V> nuevo = new NodoTablas<K,V>(key, value);
+			mapa.cambiarInformacion(pos, nuevo);
+			totalElementos++;
 		}
 		
-		int posicion = hash(pLlave);
-		NodoTablas<K,V> actual = array.darElemento( posicion );
+		else if(act.getKey().equals(key))
+			act.cambiarValor(value);
 		
-		if (actual == null || actual.getKey().equals("EMPTY"))
+		else
+			putRecursiveVersion(pos + 1, key, value);
+
+		verificarInvariante();
+	}
+
+	/**
+	 * Mete un elemento al mapa recursivamente.
+	 * @param pos. Posicion actual a revisar.
+	 * @param key. LLave del nodo.
+	 * @param value. Valor del nodo.
+	 */
+	private void putRecursiveVersion(int pos, K key, V value)
+	{
+		if(pos > m)
+			pos = 1;
+		NodoTablas<K,V> act = mapa.obtenerElementoPos(pos);
+		if(act == null || act.getKey().equals("EMPTY"))
 		{
-			NodoTablas<K,V> nuevoElemento = new NodoTablas<K,V>(pLlave , pValor);
-			array.cambiarInformacion(posicion , nuevoElemento );
-			N++;
+			NodoTablas<K,V> nuevo = new NodoTablas<K,V>(key, value);
+			mapa.cambiarInformacion(pos, nuevo);
+			totalElementos++;
 		}
 		
-		else if ( actual.getKey().equals(pLlave) )
-		{
-			actual.cambiarValor(pValor);
-	
-		}
-//		else
-//		{
-//			 putRecursiveVersion(posicion + 1, pLlave, pValor);
-//		}
-           
+		else if(act.getKey().equals(key))
+			act.cambiarValor(value);
+		
+		else
+			putRecursiveVersion(pos + 1, key, value);
 	}
-	public int darN()
+
+	/**
+	 * Busca un elemento del mapa.
+	 * @param key. LLave del nodo.
+	 */
+	@Override
+	public V get( K key ) 
 	{
-		return N;
+		int pos = getPos(key);
+		NodoTablas<K,V> act = mapa.obtenerElementoPos(pos);
+		
+		if(act != null && key.equals(act.getKey()))
+			return act.getValue();
+		
+		else if(act != null && act.getKey().equals("EMPTY"))
+			return getRecursiveVersion(pos + 1, key);
+		
+		else
+			return null;
 	}
-	public double darFactorDeCarga()
+
+	/**
+	 * Busca un elemento del mapa recursivamente.
+	 * @param key. LLave del nodo.
+	 */
+	private V getRecursiveVersion(int pos, K key) 
 	{
-		return N/M;
+		V retorno = null;
+		if(pos > m )
+			pos = 1;
+		
+		NodoTablas<K,V> act = mapa.obtenerElementoPos(pos);
+		
+		if(act != null && key.equals(act.getKey()))
+			retorno =  act.getValue();
+		
+		else if(act != null &&  act.getKey().equals("EMPTY"))
+			
+			retorno = getRecursiveVersion(pos+1, key);
+		
+		return retorno;
 	}
-	
+
+	/**
+	 * Elimina un elemento del mapa.
+	 * @param key. LLave del nodo.
+	 */
 	@Override
-	public V get(K pLlave) 
+	public V remove( K key) 
 	{
-		// TODO Auto-generated method stub
-		int posicion = hash(pLlave);
-		NodoTablas<K,V> actual = array.obtenerElementoPos(posicion);
-		for (posicion=posicion; actual != null && pLlave.equals(actual.getKey()) ; posicion++)
+		int pos = getPos(key);
+		V retorno = null;
+		NodoTablas<K,V> act = mapa.obtenerElementoPos(pos);
+		
+		if(act != null && key.equals(act.getKey()))
 		{
-			return actual.getValue();
+			retorno = act.getValue();
+			act.cambiarValor(null);
+			totalElementos--;
 		}
-		return null;
+		
+		else 
+			return deleteRecursiveVersion(pos + 1, key);
+
+		verificarInvariante();
+		return retorno;
 	}
 
-	@Override
-	public V remove(K pLlave) {
-		// TODO Auto-generated method stub
-		int posicion = hash (pLlave);
-		V respuesta;
-		NodoTablas<K,V> actual = array.obtenerElementoPos(posicion);
-		for (posicion = posicion ; actual != null && pLlave.equals(actual.getKey()); posicion++)
+	/**
+	 * Elimina un elemento del mapa recursivamente.
+	 * @param key. LLave del nodo.
+	 */
+	private V deleteRecursiveVersion(int pos, K key) 
+	{
+		if(pos >= (m-1))
+			pos = 0;
+		
+		NodoTablas<K,V> act = mapa.obtenerElementoPos(pos);
+		if(act != null && key.equals(act.getKey()))
 		{
-			respuesta = actual.getValue();
-			actual.cambiarValor(null);
-			N--;
-			return respuesta;
+			V retorno = act.getValue();
+			act.cambiarValor(null);;
+			totalElementos--;
+			return retorno;
 		}
-		return null;
+		
+		else if(key.equals("EMPTY") || (act != null && act.getKey() != null))
+			return getRecursiveVersion(pos + 1, key);
+		
+		else
+			return null; 
 	}
 
+	/**
+	 * Busca un elemento en el mapa.
+	 * @param key. LLave del nodo.
+	 * @return true si esta, false de lo contrario.
+	 */
 	@Override
-	public boolean contains(K pLlave) {
-		// TODO Auto-generated method stub
-		return get(pLlave) != null;
+	public boolean contains( K key) 
+	{
+		return get(key) != null ? true:false;
 	}
 
-	@Override
-	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return size() == 0;
+	/**
+	 * Revisa si la tabla se encuentra vacia.
+	 * @return True si esta vacia, false de lo contrario.
+	 */
+	public boolean isEmpty( )
+	{
+		return totalElementos > 0 ? false : true;
 	}
 
-	@Override
-	public int size() {
-		// TODO Auto-generated method stub
-		return N;
+	/**
+	 * Retornar el numero de tuplas presentes en la tabla de simobolos.
+	 * @return numero de tuplas presentes en la tabla de simobolos.
+	 */
+	public int size( )
+	{
+		return totalElementos;
 	}
 
 	@Override
 	public ArregloDinamico<K> keySet() {
 		// TODO Auto-generated method stub
-		ArregloDinamico<K> respuesta = new ArregloDinamico<>(N);
-		for ( int i = 0 ; i < M ; i++)
+		ArregloDinamico<K> respuesta = new ArregloDinamico<>(totalElementos);
+		for ( int i = 0 ; i < m ; i++)
 		{
-			NodoTablas<K,V> temporal = array.borrarElemento(i);
+			NodoTablas<K,V> temporal = mapa.borrarElemento(i);
 			if (temporal != null && temporal.getKey() != null)
 			{
 				respuesta.agregarAlFinal(temporal.getKey());
@@ -124,10 +253,10 @@ public class TablaHashLinearProbing < K extends Comparable<K>, V extends Compara
 	@Override
 	public ArregloDinamico<V> valueSet() {
 		// TODO Auto-generated method stub
-		ArregloDinamico<V> respuesta = new ArregloDinamico<>(N);
-		for ( int i = 0; i < M ; i++ )
+		ArregloDinamico<V> respuesta = new ArregloDinamico<>(totalElementos);
+		for ( int i = 0; i < m ; i++ )
 		{
-			NodoTablas<K,V> temporal = array.obtenerElementoPos(i);
+			NodoTablas<K,V> temporal = mapa.obtenerElementoPos(i);
 			if (temporal != null && temporal.getValue() != null  )
 			{
 				respuesta.agregarAlFinal(temporal.getValue());
@@ -136,29 +265,42 @@ public class TablaHashLinearProbing < K extends Comparable<K>, V extends Compara
 		return respuesta;
 	}
 	
-	public int hash( K key )
+	public double darFactorDeCarga()
 	{
-		return (key.hashCode() & 0x7fffffff) % M;
-	}
-		
-	public void rehash()
-	{
-		ArregloDinamico<NodoTablas<K,V>> todosLosElementos = obtenerTodos();
-		array = new ArregloDinamico<NodoTablas<K,V>>(M);
-		for ( int i = 0 ; i < todosLosElementos.size() ; i++ )
-		{
-			NodoTablas<K,V> actual = todosLosElementos.obtenerElementoPos(i);
-			put(actual.getKey() , actual.getValue());
-		}
-		numeroRehashes++;
+		return (0.0 + totalElementos)/(0.0 + m);
 	}
 	
-	public ArregloDinamico<NodoTablas<K,V>> obtenerTodos()
+	public void rehash()
 	{
-		ArregloDinamico<NodoTablas<K,V>> respuesta = new ArregloDinamico<NodoTablas<K,V>>(N);
-		for( int i = 0; i < M ; i++ )
+		nreHash++;
+		int j = m;
+		m = Extras.getNextPrime((2*j));
+		p = Extras.getNextPrime(m);
+		a  = (int) (Math.random() * (p-1)+1);
+		b  = (int) (Math.random() * (p-1)+1);
+		ArregloDinamico<NodoTablas<K,V>> todo = getAll();
+		totalElementos = 0;
+		mapa = new ArregloDinamico<NodoTablas<K,V>>(m);
+		
+		for(int i = 1; i <= todo.size();i++)
 		{
-			NodoTablas<K,V> temporal = array.obtenerElementoPos(i);
+			NodoTablas<K,V> act= todo.obtenerElementoPos(i);
+			put(act.getKey(), act.getValue());
+		}
+	}
+	
+	public int numeroReHash()
+	{
+		return nreHash;
+	}
+	
+	
+	public ArregloDinamico<NodoTablas<K,V>> getAll() 
+	{
+		ArregloDinamico<NodoTablas<K,V>> respuesta = new ArregloDinamico<NodoTablas<K,V>>(totalElementos);
+		for( int i = 0; i < m ; i++ )
+		{
+			NodoTablas<K,V> temporal = mapa.obtenerElementoPos(i);
 			if (temporal != null)
 			{
 				respuesta.agregarAlFinal(temporal);
@@ -166,27 +308,17 @@ public class TablaHashLinearProbing < K extends Comparable<K>, V extends Compara
 		}
 		return respuesta;
 	}
-	public int numeroRehashes()
+
+	public int getPos(K key)
 	{
-		return numeroRehashes;
+		int hashInicial =  (a * key.hashCode( ) + b) % p;
+		int hashFinal = Math.abs(hashInicial) % m;
+		return hashFinal;
 	}
-	private void putRecursiveVersion(int pos, K key, V value)
-    {
-        if(pos > M)
-            pos = 1;
-        NodoTablas<K,V> act = array.obtenerElementoPos(pos);
-        if(act == null || act.getKey().equals("EMPTY"))
-        {
-        	NodoTablas<K,V> nuevo = new NodoTablas<K,V>(key, value);
-            array.cambiarInformacion(pos, nuevo);
-            N++;
-        }
 
-        else if(act.getKey().equals(key))
-            act.cambiarValor(value);
-
-        else
-            putRecursiveVersion(pos + 1, key, value);
-    }
-	
+	private void verificarInvariante( )
+	{
+		assert factorDeCarga < 0.75;
+		assert factorDeCarga >= 0;
+	}
 }
