@@ -37,9 +37,9 @@ public class Modelo
 	
 	public Modelo()
 	{
-		taxis = new ArregloDinamico<>(10000000);
+		taxis = new ArregloDinamico<>(1000000);
 		
-		linearCompañias = new TablaHashLinearProbing<>(100000);
+		linearCompañias = new TablaHashLinearProbing<>(1000000);
 	}
 
 
@@ -141,7 +141,9 @@ public class Modelo
 					contador++;
 					System.out.println(contador);
 					String llave = Company;
-					linearCompañias.put(llave, taxis);
+					ArregloDinamico<Taxis> valor = new ArregloDinamico<>(1000000);
+					valor.agregarAlFinal(taxi1);
+					linearCompañias.put(llave, valor);
 	
 		     }
 		}
@@ -214,9 +216,20 @@ public class Modelo
 	
 
 	
-	public void topTaxisAfiliados(int pM)
+	public void topTaxisAfiliados()
 	{
-		ArregloDinamico<String> llaves = linearCompañias.keySet();
+		//ArregloDinamico<String> llaves = linearCompañias.keySet();
+		int cantidadTaxis = 0;
+		for(int i =0 ; i < linearCompañias.size();i++)
+		{	
+			String llave1 = linearCompañias.keySet().darElemento(i);
+			
+		
+			System.out.println("compañia: " + llave1 + "  taxis inscritos: "+ cantidadTaxis);
+		}
+		
+		
+		
 	}
 	
 }

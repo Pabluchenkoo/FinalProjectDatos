@@ -44,6 +44,7 @@ public class Controller {
 				view.printMessage("Cargar datos: ");
 			    try {
 					modelo.leerArchivo();
+					view.printMessage("datos cargados");
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -51,17 +52,11 @@ public class Controller {
 			    //view.printMessage("Datos cargados");						
 				break;
 
-			/*
+			
 			case 2:
 				try 
 				{
-				view.printMessage("Ingresar primer id: ");
-				dato = lector.next();
-                int id1 = Integer.parseInt(dato);
-                view.printMessage("Ingresar segundo id: ");
-				dato = lector.next();
-                int id2 = Integer.parseInt(dato);
-				modelo.REQ1(id1, id2);;
+				modelo.topTaxisAfiliados();
 				} 
 				catch (Exception e) 
 				{
@@ -70,7 +65,7 @@ public class Controller {
 				}
 							
 				break;
-
+				/*
 			case 3:
 				try 
 				{
