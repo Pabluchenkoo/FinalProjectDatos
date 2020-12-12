@@ -56,7 +56,7 @@ public class Controller {
 			case 2:
 				try 
 				{
-				modelo.prueba();
+				modelo.tasisPorCompañias();
 				} 
 				catch (Exception e) 
 				{

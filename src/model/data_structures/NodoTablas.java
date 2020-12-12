@@ -1,6 +1,6 @@
 package model.data_structures;
 
-public class NodoTablas <K extends Comparable<K>, V > implements Comparable<NodoTablas<K,V>>
+public class NodoTablas <K extends Comparable<K>, V extends Comparable<V> > implements Comparable<NodoTablas<K,V>>
 {
 
     private K key;

@@ -51,13 +51,15 @@ public class Taxis implements Comparable<Taxis>{
 	
 	String DropoffCentroidLocation;
 	
+	int numero = 0;
+	
 	
 	public Taxis(String tripID, String taxiID, String tripStartTimestamp, String tripEndTimestamp, String tripSeconds,
 			String tripMiles, String pickupCensusTract, String dropoffCensusTract, String pickupCommunityArea,
 			String dropoffCommunityArea, String fare, String tips, String tolls, String extras, String tripTotal,
 			String paymentType, String company, String pickupCentroidLatitude, String pickupCentroidLongitude,
 			String pickupCentroidLocation, String dropoffCentroidLatitude, String dropoffCentroidLongitude,
-			String dropoffCentroidLocation)
+			String dropoffCentroidLocation, int pNumero)
 	{
 		 
 		
@@ -106,8 +108,16 @@ public class Taxis implements Comparable<Taxis>{
 		DropoffCentroidLongitude = dropoffCentroidLongitude;
 		
 		DropoffCentroidLocation = dropoffCentroidLocation;
+		numero = pNumero;
 	}	
+	public int getNumero() {
+		return numero;
+	}
 
+
+	public void setNumero(int pNumero) {
+		numero = pNumero;
+	}
 
 	public String getTripID() {
 		return TripID;

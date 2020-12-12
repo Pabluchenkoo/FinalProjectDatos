@@ -31,15 +31,16 @@ public class Modelo
 	public static final String DATA_TAXIS = "./data/taxi-trips-wrvz-psew-subset-small.csv";
 	
 	private ArregloDinamico<Taxis> taxis;
+//	private int numeroTaxis = 0;
 	
-	private TablaHashLinearProbing<String,ArregloDinamico<Taxis>> linearCompañias;
+	private TablaHashLinearProbing< String, Double > linearCompaÃ±ias;
 	
 	
 	public Modelo()
 	{
 		taxis = new ArregloDinamico<>(1000000);
 		
-		linearCompañias = new TablaHashLinearProbing<>(1000000);
+		linearCompaÃ±ias = new TablaHashLinearProbing<>(1000000);
 	}
 
 
@@ -56,9 +57,13 @@ public class Modelo
 			 
 			 csvReader.readNext();         
 			 String [] data;
-			 int contador = 0;
-			 
-		     while ((data = csvReader.readNext()) != null) 
+//			 int contador = 0;
+			 boolean termino = false;
+//			 String llaveAnterior = "";
+//			 int contador1=1;
+//			 int contador2=0;
+			 Double number = 1.0;
+		     while ((data = csvReader.readNext()) != null && !termino == true) 
 		     {
 		       
 					
@@ -131,19 +136,71 @@ public class Modelo
 					String DropoffCentroidLocation = data[k];
 					k++;	
 					
+					int numero = 1;
 					
 					Taxis taxi1 = new Taxis(TripID, TaxiID, TripStartTimestamp, TripEndTimestamp, TripSeconds, 
 							TripMiles, PickupCensusTract, DropoffCensusTract, PickupCommunityArea, DropoffCommunityArea, 
 							Fare, Tips, Tolls, Extras, TripTotal, PaymentType, Company, PickupCentroidLatitude, PickupCentroidLongitude,
-							PickupCentroidLocation, DropoffCentroidLatitude, DropoffCentroidLongitude, DropoffCentroidLocation);	
+							PickupCentroidLocation, DropoffCentroidLatitude, DropoffCentroidLongitude, DropoffCentroidLocation, numero);	
 					
 					taxis.agregarAlFinal(taxi1);
-					contador++;
-					System.out.println(contador);
+					
+//					contador++;
+//					System.out.println(taxi1.getTripID());
+//					System.out.println(taxi1.getPaymentType());
+					
+					
+//					if(contador==5)
+//					{
+//						termino=true;
+//					}
+					
+					
 					String llave = Company;
-					ArregloDinamico<Taxis> valor = new ArregloDinamico<>(1000000);
-					valor.agregarAlFinal(taxi1);
-					linearCompañias.put(llave, valor);
+					
+					if(linearCompaÃ±ias.contains(llave))
+					{
+
+						linearCompaÃ±ias.put(llave, number + 1 );
+					}
+					else
+					{					
+						linearCompaÃ±ias.put(llave, number);
+					}
+					
+					
+					
+					
+					System.out.println(llave);
+					
+					System.out.println(number);
+					
+//					if(!llave.equals(llaveAnterior))
+//					{
+//						
+//						llaveAnterior = llave;
+//						
+//						if(contador1 == 1 && contador2==0)
+//						{
+//							contador2 ++;
+//						}
+//						else
+//						{
+//							numero = contador2;
+//							linearCompaÃ±ias.put(llave, valor);
+//							llaveAnterior=llave;
+//						}
+//			
+//					}
+//					else
+//					{
+//						contador2++;
+//						
+//					}
+					
+					
+					//System.out.println(contador);
+					
 	
 		     }
 		}
@@ -166,24 +223,24 @@ public class Modelo
 	
 	/* Requerimiento 2 */
 	
-	public int compañiasTaxiInscrito()
+	public int compaÃ±iasTaxiInscrito()
 	{
-		ArregloDinamico compañias = new ArregloDinamico(100000);
+		ArregloDinamico compaÃ±ias = new ArregloDinamico(100000);
 		for(int i =0; i < taxis.darTamano();i ++)
 		{
-			String compañia = taxis.darElemento(i).getCompany();
+			String compaÃ±ia = taxis.darElemento(i).getCompany();
 			
-			for(int k=0; k<compañias.darTamano();k++)
+			for(int k=0; k<compaÃ±ias.darTamano();k++)
 			{
-				if(!compañia.equals(compañias.obtenerElementoPos(k)))
+				if(!compaÃ±ia.equals(compaÃ±ias.obtenerElementoPos(k)))
 				{
-					compañias.agregar(compañia);
+					compaÃ±ias.agregar(compaÃ±ia);
 				}
 			}
 
 		}	
-		System.out.println("la cantidad de compaÃ±ias con un taxi inscrito es " + compañias.darTamano());
-		return compañias.size();
+		System.out.println("la cantidad de compaÃ±ias con un taxi inscrito es " + compaÃ±ias.darTamano());
+		return compaÃ±ias.size();
 		
 	}
 	
@@ -194,66 +251,59 @@ public class Modelo
 	 *
 	 *
 	 */
-	public ArregloDinamico<String> Compañias()
+	public ArregloDinamico<String> CompaÃ±ias()
 	{
-		ArregloDinamico<String> compañias = new ArregloDinamico<String>(100000);
+		ArregloDinamico<String> compaÃ±ias = new ArregloDinamico<String>(100000);
 		for (int i =0; i<taxis.darTamano();i++)
 		{
-			String compañiai = taxis.darElemento(i).getCompany();
+			String compaÃ±iai = taxis.darElemento(i).getCompany();
 			
 			int numTaxis = 0;
-			if(compañias.estaPresente(compañiai) != 1)
+			if(compaÃ±ias.estaPresente(compaÃ±iai) != 1)
 			{
-				compañias.agregar(compañiai);
+				compaÃ±ias.agregar(compaÃ±iai);
 			}
 			
 	
 		}
-		return compañias;
+		return compaÃ±ias;
 	
 
 	}
 	
 
 	
-	public void topTaxisAfiliados()
+	public void tasisPorCompaÃ±ias()
 	{
-		//ArregloDinamico<String> llaves = linearCompaÃ±ias.keySet();
-		int cantidadTaxis = 0;
-		for(int i =0 ; i < linearCompañias.size();i++)
+		
+		ArregloDinamico<String> keys = linearCompaÃ±ias.keySet();
+		
+		ArregloDinamico<Double> values = linearCompaÃ±ias.valueSet();
+		
+		for(int i =0 ; i < keys.size();i++)
 		{	
-			String llave1 = linearCompañias.keySet().darElemento(i);
+			Double valor = linearCompaÃ±ias.valueSet().darElemento(i);
 			
-		
-			System.out.println("compañia: " + llave1 + "  taxis inscritos: "+ cantidadTaxis);
+			System.out.println(keys.darElemento(i));
+			
+			System.out.println(values.darElemento(i));
+			
+			
+			
 		}
+		
+
+		System.out.println(keys.size());
 		
 		
 		
 	}
 	
-	public void prueba()
-	{
-		int cantidadTaxis=1;
-		for(int i = 0 ; i <= linearCompañias.size()-1 ; i++)
-		{
-			String compañia = linearCompañias.keySet().darElemento(i);
-			
-			for (int j = i+1; j<linearCompañias.size()-1 ; j++)
-			{
-				String comparar = linearCompañias.keySet().darElemento(j);
-				
-				if (compañia==comparar)
-				{
-					cantidadTaxis++;	
-				}
-			}
-			System.out.println("Compañia: " + compañia+ " Cantidad de taxis: " +cantidadTaxis);			
-		}
+	
 		
 	}
 	
-}
+
 	
 
 

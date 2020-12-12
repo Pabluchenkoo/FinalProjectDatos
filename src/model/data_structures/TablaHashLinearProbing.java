@@ -1,8 +1,9 @@
 package model.data_structures;
 
 import model.logic.Extras;
+import model.logic.Taxis;
 
-public class TablaHashLinearProbing < K extends Comparable<K>, V extends Comparable<V>> implements TablaSimbolos<K, V> 
+public class TablaHashLinearProbing < K extends Comparable<K>, V extends Comparable<V> > implements TablaSimbolos<K, V> 
 {
 	
 	
@@ -47,6 +48,7 @@ public class TablaHashLinearProbing < K extends Comparable<K>, V extends Compara
 	 */
 	private int nreHash; 
 
+//	public int contador;
 	/**
 	 * Constructor onstructor de la clase.
 	 * @param size. Tamano inicial de la clase.
@@ -58,6 +60,7 @@ public class TablaHashLinearProbing < K extends Comparable<K>, V extends Compara
 		a  = (int) (Math.random() * (p-1)+1);
 		b  = (int) (Math.random() * (p-1)+1);
 		mapa = new ArregloDinamico<NodoTablas<K,V>> (m);
+//		contador = 0;
 	}
 
 	/**
@@ -67,21 +70,33 @@ public class TablaHashLinearProbing < K extends Comparable<K>, V extends Compara
 	 */
 	public void put(K key, V value) 
 	{
+		
 		if((darFactorDeCarga() + (1/m)) >= 0.75)
 			rehash( );
 		
 		int pos = getPos(key);
 		NodoTablas<K,V> act = mapa.obtenerElementoPos(pos);
-		
+//		int numero1 = Integer.parseInt((String) numero);
 		if(act == null || act.getKey().equals("EMPTY"))
 		{
+			
 			NodoTablas<K,V> nuevo = new NodoTablas<K,V>(key, value);
+			
 			mapa.cambiarInformacion(pos, nuevo);
 			totalElementos++;
+			
+//			numero1 = 1;
+//			contador = 1;
 		}
 		
 		else if(act.getKey().equals(key))
-			act.cambiarValor(value);
+		{
+			
+			act.cambiarValor( value );
+			
+//			contador ++;
+//			numero1++;
+		}
 		
 		else
 			putRecursiveVersion(pos + 1, key, value);
@@ -241,7 +256,7 @@ public class TablaHashLinearProbing < K extends Comparable<K>, V extends Compara
 		ArregloDinamico<K> respuesta = new ArregloDinamico<>(totalElementos);
 		for ( int i = 0 ; i < m ; i++)
 		{
-			NodoTablas<K,V> temporal = mapa.borrarElemento(i);
+			NodoTablas<K,V> temporal = mapa.obtenerElementoPos(i);
 			if (temporal != null && temporal.getKey() != null)
 			{
 				respuesta.agregarAlFinal(temporal.getKey());
@@ -256,14 +271,23 @@ public class TablaHashLinearProbing < K extends Comparable<K>, V extends Compara
 		ArregloDinamico<V> respuesta = new ArregloDinamico<>(totalElementos);
 		for ( int i = 0; i < m ; i++ )
 		{
+			
 			NodoTablas<K,V> temporal = mapa.obtenerElementoPos(i);
 			if (temporal != null && temporal.getValue() != null  )
 			{
+				
 				respuesta.agregarAlFinal(temporal.getValue());
+				
 			}
+			
 		}
 		return respuesta;
 	}
+//	public int numero( P numero)
+//	{
+//		int numero1 = Integer.parseInt((String) numero);
+//		return numero1;
+//	}
 	
 	public double darFactorDeCarga()
 	{
@@ -321,4 +345,10 @@ public class TablaHashLinearProbing < K extends Comparable<K>, V extends Compara
 		assert factorDeCarga < 0.75;
 		assert factorDeCarga >= 0;
 	}
+//	protected int getContador()
+//	{
+//		return contador;
+//	}
+
+	
 }
